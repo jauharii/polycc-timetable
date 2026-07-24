@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>PolyCC Timetable</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <main class="page">
+    {% if not print_mode %}
+    <section class="toolbar">
+      <form method="get" class="filters">
+        <label>
+          <span>Agency</span>
+          <select name="agencyid" onchange="this.form.submit()">
+            {% for item in agencies %}
+            <option value="{{ item.agencyid }}" {% if item.agencyid == agencyid %}selected{% endif %}>{{ item.agencyname }}</option>
+            {% endfor %}
+          </select>
+        </label>
+        <label>
+          <span>Session</span>
+          <select name="sessioncode" onchange="this.form.submit()">
+            {% for item in sessions %}
+            <option value="{{ item.sessioncode }}" {% if item.sessioncode == sessioncode %}selected{% endif %}>{{ item.session_name }}</option>
+            {% endfor %}
+          </select>
+        </label>
+        <label>
+          <span>Department</span>
+          <select name="departmentcode" onchange="this.form.submit()">
+            <option value="">All</option>
+            {% for item in departments %}
+            <option value="{{ item.departmentcode }}" {% if item.departmentcode == departmentcode %}selected{% endif %}>{{ item.departmentname }}</option>
+            {% endfor %}
+          </select>
+        </label>
+        <label>
+          <span>Filter by</span>
+          <select name="filter_type" onchange="this.form.submit()">
+            <option value="class" {% if filter_type == 'class' %}selected{% endif %}>Class</option>
+            <option value="lab" {% if filter_type == 'lab' %}selected{% endif %}>Lab</option>
+            <option value="lecturer" {% if filter_type == 'lecturer' %}selected{% endif %}>Lecturer</option>
+          </select>
+        </label>
+        <label>
+          <span>{{ filter_type|capitalize }}</span>
+          <input list="{{ filter_type }}-options" name="search_query" value="{{ search_query }}" placeholder="Enter {{ filter_type }}">
+          <datalist id="class-options">
+            {% for item in classes %}
+            <option value="{{ item.classcode }}">
+            {% endfor %}
+          </datalist>
+          <datalist id="lab-options">
+            {% for item in search_options %}
+            <option value="{{ item }}">
+            {% endfor %}
+          </datalist>
+          <datalist id="lecturer-options">
+            {% for item in search_options %}
+            <option value="{{ item }}">
+            {% endfor %}
+          </datalist>
+        </label>
+        <button type="submit">Show</button>
+        <button type="button" onclick="window.print()">Print</button>
+      </form>
+    </section>
+    {% endif %}
+
+    <section class="table-wrap poster-wrap">
+      <div class="poster-headline">{{ classcode|upper }} Sesi {{ sessioncode[4] if sessioncode|length > 4 else '' }} {{ sessions | selectattr('sessioncode', 'equalto', sessioncode) | map(attribute='session_name') | first or '' }}</div>
+      <div class="poster-agency">{{ agencies | selectattr('agencyid', 'equalto', agencyid) | map(attribute='agencyname') | first or '' }}</div>
+      <table class="timetable poster-table">
+        <thead>
+          <tr>
+            <th class="day-corner"></th>
+            {% for hour in time_order %}
+            <th class="time-head">
+              <div class="time-index">{{ loop.index }}</div>
+              <div class="time-label">{{ time_labels[hour] }}</div>
+            </th>
+            {% endfor %}
+          </tr>
+        </thead>
+        <tbody>
+          {% for row in rows %}
+          <tr>
+            <th class="day-name">{{ row.day_name }}</th>
+            {% for cell in row.cells %}
+            <td class="poster-cell"{% if cell.span > 1 %} colspan="{{ cell.span }}"{% endif %}>
+              {% for item in cell['items'] %}
+              <div class="poster-slot">
+                <div class="poster-course">{{ item.coursecode }}</div>
+                {% if filter_type == 'class' %}
+                <div class="poster-room">{{ item.labname }}</div>
+                {% elif filter_type == 'lecturer' %}
+                <div class="poster-room">{{ item.labname }}</div>
+                <div class="poster-room">{{ item.classcode }}</div>
+                {% elif filter_type == 'lab' %}
+                <div class="poster-room">{% for lecturer in item.lecturers %}{% if not loop.first %}, {% endif %}{{ lecturer.code }}{% endfor %}</div>
+                <div class="poster-room">{{ item.classcode }}</div>
+                {% else %}
+                <div class="poster-room">{{ item.labname }}</div>
+                {% endif %}
+              </div>
+              {% endfor %}
+            </td>
+            {% endfor %}
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </section>
+
+    <section class="details">
+      <table class="detail-table">
+        <thead>
+          <tr>
+            <th>Course Code</th>
+            <th>Course Name</th>
+            <th>Lecturer Code</th>
+            <th>Lecturer Name</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for item in course_rows %}
+            {% for lecturer in item.lecturers %}
+          <tr>
+            {% if loop.first %}
+            <td rowspan="{{ item.rowspan }}">{{ item.coursecode }}</td>
+            <td rowspan="{{ item.rowspan }}">{{ item.coursename }}</td>
+            {% endif %}
+            <td>{{ lecturer.lecturercode }}</td>
+            <td>{{ lecturer.lecturername }}</td>
+          </tr>
+            {% endfor %}
+          {% endfor %}
+        </tbody>
+      </table>
+    </section>
+  </main>
+</body>
+</html>

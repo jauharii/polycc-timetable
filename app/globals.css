@@ -1,0 +1,221 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply m-0 font-[Arial,Helvetica,sans-serif] bg-white text-[#111];
+  }
+}
+
+.page {
+  @apply max-w-[297mm] mx-auto p-6;
+}
+
+.toolbar, .details {
+  @apply bg-white border border-[#d9d9d9] rounded-lg p-4 mb-6;
+}
+
+.filters {
+  @apply flex gap-3 items-end flex-wrap;
+}
+
+.filters label {
+  @apply grid gap-1.5 min-w-[220px];
+}
+
+.filters select,
+.filters input,
+.filters button {
+  @apply h-10 border border-[#bdbdbd] rounded-md px-3 text-base bg-white;
+}
+
+.filters button[type="submit"] {
+  @apply bg-black text-white cursor-pointer;
+}
+
+.filters button[type="button"] {
+  @apply bg-[#444] text-white cursor-pointer;
+}
+
+.poster-wrap {
+  @apply pt-2;
+}
+
+.poster-headline {
+  @apply text-center text-[72px] font-normal leading-[1.05] mb-3;
+}
+
+.poster-agency {
+  @apply text-[24px] mb-0.5;
+}
+
+.timetable, .detail-table {
+  @apply w-full border-collapse;
+}
+
+.poster-table {
+  table-layout: fixed;
+  border: 3px solid #111;
+}
+
+.poster-table th,
+.poster-table td {
+  border: 1.5px solid #111;
+  padding: 0;
+  vertical-align: middle;
+  background: #fff;
+}
+
+.day-corner {
+  width: 50mm;
+  height: 12mm;
+}
+
+.time-head {
+  height: 12mm;
+  text-align: center;
+}
+
+.time-index {
+  @apply text-[14px] leading-none mb-0.5 font-normal;
+}
+
+.time-label {
+  @apply text-[9px] leading-[1.1] font-normal whitespace-nowrap;
+}
+
+.day-name {
+  width: 50mm;
+  @apply text-center text-[16px] font-normal leading-[1.1] px-1 break-words;
+  overflow-wrap: anywhere;
+}
+
+.poster-cell {
+  height: 20mm;
+}
+
+.poster-slot {
+  @apply h-full min-h-0 flex flex-col items-center justify-center text-center px-1 overflow-hidden;
+}
+
+.poster-course {
+  @apply text-[12px] leading-[1.1] font-normal mb-[3mm] max-w-full break-words;
+  overflow-wrap: anywhere;
+}
+
+.poster-room {
+  @apply text-[9px] leading-[1.1] font-normal max-w-full break-words;
+  overflow-wrap: anywhere;
+}
+
+.detail-table th,
+.detail-table td {
+  @apply border border-[#cfcfcf] p-[10px] align-top;
+}
+
+.detail-table thead th {
+  @apply bg-[#f3f3f3] text-left;
+}
+
+@page {
+  size: A4 landscape;
+  margin: 6mm;
+}
+
+@media print {
+  html, body {
+    @apply bg-white;
+    width: 297mm;
+    height: 210mm;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .page {
+    @apply max-w-[297mm] m-0 px-[6mm];
+  }
+
+  .toolbar {
+    @apply hidden !important;
+  }
+
+  .poster-headline {
+    @apply text-[18px] mb-0.5 leading-[1.1];
+  }
+
+  .poster-agency {
+    @apply text-[10px] mb-0.5;
+  }
+
+  .table-wrap, .details {
+    @apply m-0 p-0 border-0 rounded-none break-inside-avoid;
+    page-break-inside: avoid;
+  }
+
+  .poster-table {
+    @apply w-full border-[3px] border-black border-collapse border-separate !important;
+    border-spacing: 0;
+  }
+
+  .poster-table th,
+  .poster-table td {
+    @apply border border-black p-0;
+  }
+
+  .day-corner {
+    width: 50mm;
+    height: 8mm;
+  }
+
+  .time-head {
+    height: 8mm;
+  }
+
+  .time-index {
+    @apply text-[11px] m-0 leading-none;
+  }
+
+  .time-label {
+    @apply text-[7px] whitespace-nowrap;
+  }
+
+  .day-name {
+    width: 50mm;
+    @apply text-[12px] px-[2px] leading-none;
+  }
+
+  .poster-cell {
+    height: 14mm;
+  }
+
+  .poster-slot {
+    @apply min-h-0 h-full p-[2px];
+  }
+
+  .poster-course {
+    @apply text-[9px] mb-[2px] leading-none;
+  }
+
+  .poster-room {
+    @apply text-[7px] leading-none;
+  }
+
+  .details {
+    @apply mt-[4mm];
+  }
+
+  .detail-table {
+    @apply w-full text-[8px] border-collapse border-separate border-[3px] border-black !important;
+    border-spacing: 0;
+  }
+
+  .detail-table th,
+  .detail-table td {
+    @apply p-[2px_4px] border border-black;
+  }
+
+  .detail-table thead th {
+    @apply bg-white font-bold;
+  }
+}

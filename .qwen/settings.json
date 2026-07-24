@@ -1,0 +1,32 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(sqlite3 *)",
+      "Bash(nix *)",
+      "Bash(rm *)",
+      "Bash(curl *)",
+      "Bash(which *)",
+      "Bash(command *)",
+      "Bash(ls *)",
+      "Bash(graphify *)",
+      "Bash(file *)",
+      "Bash(cat *)",
+      "Read(//nix/store/f3fqr4zyl98p5j640hvhjfj58j9vjgy5-qwen-code-0.16.0/share/qwen-code/bundled/qc-helper/docs/features/**)",
+      "Bash(test *)",
+      "Skill(graphify)",
+      "Bash(python3 *)",
+      "Bash(find *)",
+      "Bash(wc *)",
+      "Bash(timeout *)",
+      "Bash(jobs)",
+      "Bash(du *)",
+      "Bash(git remote *)",
+      "Bash(/usr/bin/env *)",
+      "Bash(script *)",
+      "Bash(echo *)",
+      "Bash(npm install)",
+      "Bash(npm run *)"
+    ]
+  },
+  "$version": 4
+}

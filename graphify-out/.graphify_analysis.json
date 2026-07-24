@@ -1,0 +1,152 @@
+{
+  "communities": {
+    "0": [
+      "app",
+      "app_build_grid",
+      "app_get_db",
+      "app_index",
+      "app_print_view",
+      "app_query_all",
+      "app_query_one",
+      "test_app"
+    ],
+    "1": [
+      "import_polycc",
+      "import_polycc_extract_options",
+      "import_polycc_fetch_agency",
+      "import_polycc_load_from_cache",
+      "import_polycc_make_ttid",
+      "import_polycc_post_form",
+      "import_polycc_rationale_136"
+    ],
+    "2": [
+      "fetch_classes",
+      "fetch_classes_decode_display_cells",
+      "fetch_classes_fetch_all_classes",
+      "fetch_classes_fetch_class_schedule",
+      "fetch_classes_main",
+      "fetch_classes_post_form"
+    ],
+    "3": [
+      "check_agency5",
+      "import_polycc_merge_all_cache_to_json",
+      "import_polycc_rationale_291",
+      "run_merge",
+      "run_merge_jsave"
+    ],
+    "4": [
+      "import_polycc_ensure_db",
+      "import_polycc_fetch_text",
+      "import_polycc_main",
+      "import_polycc_save_to_cache"
+    ],
+    "5": [
+      "migrate_to_sqlite",
+      "migrate_to_sqlite_jload",
+      "migrate_to_sqlite_main"
+    ],
+    "6": [
+      "import_polycc_rationale_244",
+      "import_polycc_write_agency_to_db"
+    ],
+    "7": [
+      "check_agencies"
+    ],
+    "8": [
+      "check_db"
+    ]
+  },
+  "cohesion": {
+    "0": 0.42857142857142855,
+    "1": 0.42857142857142855,
+    "2": 0.6666666666666666,
+    "3": 0.4,
+    "4": 0.5,
+    "5": 1.0,
+    "6": 1.0,
+    "7": 1.0,
+    "8": 1.0
+  },
+  "gods": [
+    {
+      "id": "import_polycc_main",
+      "label": "main()",
+      "degree": 8
+    },
+    {
+      "id": "import_polycc_fetch_agency",
+      "label": "fetch_agency()",
+      "degree": 7
+    },
+    {
+      "id": "import_polycc_merge_all_cache_to_json",
+      "label": "merge_all_cache_to_json()",
+      "degree": 5
+    },
+    {
+      "id": "app_index",
+      "label": "index()",
+      "degree": 4
+    },
+    {
+      "id": "fetch_classes_main",
+      "label": "main()",
+      "degree": 4
+    },
+    {
+      "id": "app_get_db",
+      "label": "get_db()",
+      "degree": 3
+    },
+    {
+      "id": "app_query_all",
+      "label": "query_all()",
+      "degree": 3
+    },
+    {
+      "id": "fetch_classes_post_form",
+      "label": "post_form()",
+      "degree": 3
+    },
+    {
+      "id": "fetch_classes_fetch_all_classes",
+      "label": "fetch_all_classes()",
+      "degree": 3
+    },
+    {
+      "id": "fetch_classes_fetch_class_schedule",
+      "label": "fetch_class_schedule()",
+      "degree": 3
+    }
+  ],
+  "surprises": [
+    {
+      "source": "merge_all_cache_to_json()",
+      "target": "jsave()",
+      "source_files": [
+        "import_polycc.py",
+        "run_merge.py"
+      ],
+      "confidence": "INFERRED",
+      "relation": "calls",
+      "why": "inferred connection - not explicitly stated in source; connects across different repos/directories; peripheral node `jsave()` unexpectedly reaches hub `merge_all_cache_to_json()`"
+    }
+  ],
+  "questions": [
+    {
+      "type": "bridge_node",
+      "question": "Why does `merge_all_cache_to_json()` connect `Community 3` to `Community 1`, `Community 4`?",
+      "why": "High betweenness centrality (0.071) - this node is a cross-community bridge."
+    },
+    {
+      "type": "bridge_node",
+      "question": "Why does `main()` connect `Community 4` to `Community 1`, `Community 3`, `Community 6`?",
+      "why": "High betweenness centrality (0.043) - this node is a cross-community bridge."
+    },
+    {
+      "type": "bridge_node",
+      "question": "Why does `fetch_agency()` connect `Community 1` to `Community 4`?",
+      "why": "High betweenness centrality (0.031) - this node is a cross-community bridge."
+    }
+  ]
+}

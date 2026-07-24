@@ -1,0 +1,54 @@
+name: Deploy to GitHub Pages
+
+on:
+  schedule:
+    - cron: '0 2 1 * *'   # Monthly: 1st day, 02:00 UTC (10:00 MYT)
+  workflow_dispatch: {}     # Manual trigger
+
+permissions:
+  contents: write
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install Python dependencies
+        run: pip install requests
+
+      - name: Scrape portal data
+        run: |
+          mkdir -p data/cache
+          python3 import_polycc.py 0
+
+      - name: Verify DB exists
+        run: test -f data/timetable.db
+
+      - name: Export data to JSON
+        run: python3 scripts/export_data.py
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install Node dependencies
+        run: npm ci
+
+      - name: Build Next.js
+        env:
+          NEXT_PUBLIC_BASE_PATH: /${{ github.event.repository.name }}
+        run: npm run build
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./out
+          force_orphan: true
