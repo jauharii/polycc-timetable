@@ -3,15 +3,36 @@ name: Deploy to GitHub Pages
 on:
   schedule:
     - cron: '0 2 1 * *'   # Monthly: 1st day, 02:00 UTC (10:00 MYT)
-  workflow_dispatch: {}     # Manual trigger
+  workflow_dispatch: {}
 
 permissions:
   contents: write
 
 jobs:
-  deploy:
+  # Job 1: Split agencies into chunks
+  split-agencies:
     runs-on: ubuntu-latest
-    timeout-minutes: 120
+    outputs:
+      chunks: ${{ steps.split.outputs.chunks }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Split agencies into chunks of 5
+        id: split
+        run: |
+          python3 scripts/split_agencies.py 5
+
+  # Job 2: Parallel scrape each chunk
+  scrape:
+    needs: split-agencies
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    strategy:
+      matrix:
+        chunk: ${{ fromJson(needs.split-agencies.outputs.chunks) }}
+      fail-fast: false
     steps:
       - uses: actions/checkout@v4
 
@@ -19,19 +40,48 @@ jobs:
         with:
           python-version: '3.12'
 
-      - name: Install Python dependencies
+      - name: Install dependencies
         run: pip install requests
 
-      - name: Scrape portal data
+      - name: Create cache directory
+        run: mkdir -p data/cache
+
+      - name: Scrape chunk
         run: |
-          mkdir -p data/cache
-          python3 import_polycc.py 0
+          python3 import_polycc.py --agencies '${{ toJson(matrix.chunk) }}'
 
-      - name: Verify DB exists
-        run: test -f data/timetable.db
+      - name: Upload cache artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: cache-${{ strategy.job-index }}
+          path: data/cache/
+          retention-days: 1
 
-      - name: Export data to JSON
-        run: python3 scripts/export_data.py
+  # Job 3: Merge caches, export JSON, build, deploy
+  merge-and-deploy:
+    needs: scrape
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        run: pip install requests
+
+      - name: Download all cache artifacts
+        uses: actions/download-artifact@v4
+        with:
+          pattern: cache-*
+          path: data/cache/
+          merge-multiple: true
+
+      - name: Merge caches to DB and export JSON
+        run: |
+          python3 import_polycc.py --merge-only
+          python3 scripts/export_data.py
 
       - uses: actions/setup-node@v4
         with:

@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 """
-PolyCC timetable importer with per-agency batch caching.
-Each agency is fetched, cached to data/cache/{agencyid}.json, and written to SQLite
-incrementally. Re-runs skip already-cached agencies, so timeouts don't lose progress.
+Parallel PolyCC timetable importer.
+Usage: python3 import_polycc.py --agencies agency1,agency2,agency3
+       python3 import_polycc.py --agencies-file agencies_chunk.txt
+       python3 import_polycc.py --all  # original sequential mode
 """
 import json
 import os
@@ -12,6 +13,7 @@ import sys
 import time
 import urllib.parse
 import urllib.request
+import argparse
 
 BASE_URL = "https://app.mypolycc.edu.my/polycctas/service/kelas/"
 DATA_URL = BASE_URL + "data/viewjadual.php"
@@ -76,7 +78,6 @@ CREATE INDEX IF NOT EXISTS idx_l_agency ON lecturers(agencyid);
 CREATE INDEX IF NOT EXISTS idx_tl_lecturer ON timetable_lecturers(lecturercode, lectureragencyid);
 """
 
-
 def fetch_text(url, max_retries=2):
     req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0"})
     for attempt in range(max_retries):
@@ -87,7 +88,6 @@ def fetch_text(url, max_retries=2):
             if attempt == max_retries - 1:
                 raise
             time.sleep(2 ** attempt)
-
 
 def post_form(data, max_retries=3):
     encoded = urllib.parse.urlencode(data).encode("utf-8")
@@ -106,7 +106,6 @@ def post_form(data, max_retries=3):
                 raise
             time.sleep(2 ** attempt)
 
-
 def extract_options(html, select_name):
     match = re.search(rf'<select[^>]*name="{select_name}"[^>]*>(.*?)</select>', html, re.S)
     if not match:
@@ -115,7 +114,6 @@ def extract_options(html, select_name):
             for v, l in re.findall(r'<option value="([^"]*)"[^>]*>(.*?)</option>', match.group(1), re.S)
             if v.strip()]
 
-
 def make_ttid(day_code, time_label):
     start_str = time_label.split("-")[0].strip().replace(".", ":")
     hour = int(start_str.split(":")[0]) if ":" in start_str else int(start_str)
@@ -123,14 +121,9 @@ def make_ttid(day_code, time_label):
         hour += 12
     return f"{day_code}{hour:02d}"
 
-
-def ensure_db():
+def ensure_dirs():
     os.makedirs(DATA_DIR, exist_ok=True)
     os.makedirs(CACHE_DIR, exist_ok=True)
-    conn = sqlite3.connect(DB_PATH)
-    conn.executescript(DB_SCHEMA)
-    conn.close()
-
 
 def fetch_agency(agencyid, agencyname):
     """Fetch all data for one agency. Returns dict with all entity lists."""
@@ -138,7 +131,7 @@ def fetch_agency(agencyid, agencyname):
         "agency": {"agencyid": agencyid, "agencyname": agencyname},
         "sessions": [], "departments": [], "classes": [],
         "courses": {}, "lecturers": [], "labs": {}, "timetables": [],
-        "_seen_lecturers": set(),  # temp dedup, dropped before cache
+        "_seen_lecturers": set(),
     }
     try:
         agency_html = fetch_text(BASE_URL + "?agc=" + agencyid)
@@ -224,72 +217,66 @@ def fetch_agency(agencyid, agencyname):
                     })
     return result
 
-
 def save_to_cache(agencyid, data):
     path = os.path.join(CACHE_DIR, f"{agencyid}.json")
     to_save = {k: v for k, v in data.items() if not k.startswith("_")}
     with open(path, "w", encoding="utf-8") as f:
         json.dump(to_save, f, ensure_ascii=False)
 
-
-def load_from_cache(agencyid):
-    path = os.path.join(CACHE_DIR, f"{agencyid}.json")
-    if os.path.exists(path):
-        with open(path, "r", encoding="utf-8") as f:
-            return json.load(f)
-    return None
-
-
-def write_agency_to_db(conn, data):
-    """Write one agency's cached data to SQLite. Uses INSERT OR IGNORE for idempotency."""
+def write_agencies_to_db(agency_data_list):
+    """Write multiple agencies to SQLite. Safe for single-process merge."""
+    conn = sqlite3.connect(DB_PATH)
+    conn.executescript(DB_SCHEMA)
     cur = conn.cursor()
-    a = data["agency"]
-    cur.execute("INSERT OR IGNORE INTO agencies (agencyid, agencyname) VALUES (?, ?)", (a["agencyid"], a["agencyname"]))
 
-    for s in data["sessions"]:
-        cur.execute("INSERT OR IGNORE INTO sessions (sessioncode, session_name) VALUES (?, ?)",
-                    (s["sessioncode"], s.get("session_name", "")))
+    for data in agency_data_list:
+        a = data["agency"]
+        cur.execute("INSERT OR IGNORE INTO agencies (agencyid, agencyname) VALUES (?, ?)", (a["agencyid"], a["agencyname"]))
 
-    seen_deps = set()
-    for d in data["departments"]:
-        key = d["departmentcode"]
-        if key in seen_deps:
-            continue
-        seen_deps.add(key)
-        cur.execute("INSERT OR IGNORE INTO departments (departmentcode, departmentname) VALUES (?, ?)",
-                    (d["departmentcode"], d.get("departmentname", "")))
+        for s in data["sessions"]:
+            cur.execute("INSERT OR IGNORE INTO sessions (sessioncode, session_name) VALUES (?, ?)",
+                        (s["sessioncode"], s.get("session_name", "")))
 
-    for c in data["classes"]:
-        cur.execute("INSERT OR IGNORE INTO classes (classcode, sessioncode, departmentcode) VALUES (?, ?, ?)",
-                    (c["classcode"], c["sessioncode"], c["departmentcode"]))
+        seen_deps = set()
+        for d in data["departments"]:
+            key = d["departmentcode"]
+            if key in seen_deps:
+                continue
+            seen_deps.add(key)
+            cur.execute("INSERT OR IGNORE INTO departments (departmentcode, departmentname) VALUES (?, ?)",
+                        (d["departmentcode"], d.get("departmentname", "")))
 
-    for code, c in data["courses"].items():
-        cur.execute("INSERT OR IGNORE INTO courses (coursecode, coursename) VALUES (?, ?)",
-                    (c["coursecode"], c.get("coursename", "")))
+        for c in data["classes"]:
+            cur.execute("INSERT OR IGNORE INTO classes (classcode, sessioncode, departmentcode) VALUES (?, ?, ?)",
+                        (c["classcode"], c["sessioncode"], c["departmentcode"]))
 
-    for l in data["lecturers"]:
-        cur.execute("INSERT OR IGNORE INTO lecturers (lecturercode, lecturername, agencyid) VALUES (?, ?, ?)",
-                    (l["lecturercode"], l.get("lecturername", ""), l.get("agencyid", "")))
+        for code, c in data["courses"].items():
+            cur.execute("INSERT OR IGNORE INTO courses (coursecode, coursename) VALUES (?, ?)",
+                        (c["coursecode"], c.get("coursename", "")))
 
-    for lab in data["labs"].values():
-        cur.execute("INSERT OR IGNORE INTO labs (labname) VALUES (?)", (lab["labname"],))
+        for l in data["lecturers"]:
+            cur.execute("INSERT OR IGNORE INTO lecturers (lecturercode, lecturername, agencyid) VALUES (?, ?, ?)",
+                        (l["lecturercode"], l.get("lecturername", ""), l.get("agencyid", "")))
 
-    for t in data["timetables"]:
-        cur.execute(
-            "INSERT INTO timetables (ttid, coursecode, classcode, sessioncode, labname, agencyid, department) VALUES (?, ?, ?, ?, ?, ?, ?)",
-            (t["ttid"], t["coursecode"], t["classcode"], t["sessioncode"], t["labname"], t["agencyid"], t["department"]))
-        tid = cur.lastrowid
-        for lec in t.get("lecturers", []):
-            if lec.get("code"):
-                cur.execute("INSERT OR IGNORE INTO timetable_lecturers (timetable_id, lecturercode, lectureragencyid) VALUES (?, ?, ?)",
-                            (tid, lec["code"], lec.get("agencyid", "")))
+        for lab in data["labs"].values():
+            cur.execute("INSERT OR IGNORE INTO labs (labname) VALUES (?)", (lab["labname"],))
+
+        for t in data["timetables"]:
+            cur.execute(
+                "INSERT INTO timetables (ttid, coursecode, classcode, sessioncode, labname, agencyid, department) VALUES (?, ?, ?, ?, ?, ?, ?)",
+                (t["ttid"], t["coursecode"], t["classcode"], t["sessioncode"], t["labname"], t["agencyid"], t["department"]))
+            tid = cur.lastrowid
+            for lec in t.get("lecturers", []):
+                if lec.get("code"):
+                    cur.execute("INSERT OR IGNORE INTO timetable_lecturers (timetable_id, lecturercode, lectureragencyid) VALUES (?, ?, ?)",
+                                (tid, lec["code"], lec.get("agencyid", "")))
 
     conn.commit()
-
+    conn.close()
 
 def merge_all_cache_to_json():
-    """Merge all cached agency data into per-type JSON files for backward compatibility."""
-    agencies, sessions, departments, classes, courses, lecturers, labs, timetables = [], [], [], [], [], [], {}, []
+    """Merge all cached agency data into per-type JSON files."""
+    agencies, sessions, departments, classes, courses, lecturers, labs, timetables = [], [], [], [], {}, [], {}, []
     seen_deps, seen_cls = set(), set()
 
     for fname in sorted(os.listdir(CACHE_DIR)):
@@ -333,53 +320,96 @@ def merge_all_cache_to_json():
         "labs": len(labs), "timetables": len(timetables),
     }
 
+def get_all_agencies():
+    agencies_html = fetch_text(BASE_URL)
+    return extract_options(agencies_html, "agc")
 
 def main():
-    batch_size = int(sys.argv[1]) if len(sys.argv) > 1 else 0  # 0 = all
-    ensure_db()
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--all", action="store_true", help="Sequential all agencies (original mode)")
+    parser.add_argument("--agencies", help="Comma-separated agency IDs to process")
+    parser.add_argument("--agencies-file", help="File with one agency ID per line")
+    parser.add_argument("--merge-only", action="store_true", help="Only merge cache to DB/JSON")
+    args = parser.parse_args()
 
-    # Step 1: Get agency list
-    print("Fetching agency list...", flush=True)
-    agencies_html = fetch_text(BASE_URL)
-    all_agency_opts = extract_options(agencies_html, "agc")
-    total = len(all_agency_opts)
-    print(f"Found {total} agencies", flush=True)
+    ensure_dirs()
 
-    # Step 2: Check which are already cached
+    if args.merge_only:
+        print("Merging cache to DB/JSON...", flush=True)
+        agency_data_list = []
+        for fname in sorted(os.listdir(CACHE_DIR)):
+            if fname.endswith(".json"):
+                with open(os.path.join(CACHE_DIR, fname), "r", encoding="utf-8") as f:
+                    agency_data_list.append(json.load(f))
+        write_agencies_to_db(agency_data_list)
+        stats = merge_all_cache_to_json()
+        for k, v in stats.items():
+            print(f"  {k}: {v}")
+        return
+
+    # Determine agencies to process
+    if args.agencies:
+        try:
+            # JSON format: [{"id": "1", "name": "Agency Name"}, ...]
+            agency_list = json.loads(args.agencies)
+            all_agencies = [{"value": a["id"], "label": a.get("name", "")} for a in agency_list]
+        except json.JSONDecodeError:
+            # Fallback: comma-separated IDs
+            agency_ids = [a.strip() for a in args.agencies.split(",")]
+            all_agencies = [{"value": aid, "label": ""} for aid in agency_ids]
+    elif args.agencies_file:
+        with open(args.agencies_file, "r") as f:
+            content = f.read().strip()
+        try:
+            agency_list = json.loads(content)
+            all_agencies = [{"value": a["id"], "label": a.get("name", "")} for a in agency_list]
+        except json.JSONDecodeError:
+            agency_ids = [line.strip() for line in content.split("\n") if line.strip()]
+            all_agencies = [{"value": aid, "label": ""} for aid in agency_ids]
+    else:
+        print("Fetching agency list...", flush=True)
+        all_agencies = get_all_agencies()
+        print(f"Found {len(all_agencies)} agencies", flush=True)
+
+    # Check cached
     cached = set()
     for fname in os.listdir(CACHE_DIR):
         if fname.endswith(".json"):
             cached.add(fname.replace(".json", ""))
-    pending = [a for a in all_agency_opts if a["value"] not in cached]
+    pending = [a for a in all_agencies if a["value"] not in cached]
     print(f"Already cached: {len(cached)}, pending: {len(pending)}", flush=True)
 
-    if batch_size > 0:
-        pending = pending[:batch_size]
-        print(f"Processing batch of {len(pending)} agencies", flush=True)
+    if not pending:
+        print("Nothing to fetch. Merging...", flush=True)
+        agency_data_list = []
+        for fname in sorted(os.listdir(CACHE_DIR)):
+            if fname.endswith(".json"):
+                with open(os.path.join(CACHE_DIR, fname), "r", encoding="utf-8") as f:
+                    agency_data_list.append(json.load(f))
+        write_agencies_to_db(agency_data_list)
+        stats = merge_all_cache_to_json()
+        for k, v in stats.items():
+            print(f"  {k}: {v}")
+        return
 
-    # Step 3: Fetch and cache each agency, write to DB incrementally
-    conn = sqlite3.connect(DB_PATH)
-    conn.executescript(DB_SCHEMA)  # CREATE IF NOT EXISTS, safe
-
+    # Fetch each agency
+    agency_data_list = []
     for i, agency_opt in enumerate(pending):
         agencyid = agency_opt["value"]
-        agencyname = agency_opt["label"]
-        print(f"[{i+1}/{len(pending)}] {agencyid} {agencyname}...", flush=True)
+        agencyname = agency_opt["label"] or agencyid
+        print(f"[{i+1}/{len(pending)}] {agencyid}...", flush=True)
         data = fetch_agency(agencyid, agencyname)
         save_to_cache(agencyid, data)
-        write_agency_to_db(conn, data)
-        tt_count = len(data["timetables"])
-        print(f"  cached: {tt_count} timetables, {len(data['classes'])} classes", flush=True)
+        agency_data_list.append(data)
+        print(f"  cached: {len(data['timetables'])} timetables, {len(data['classes'])} classes", flush=True)
 
-    conn.close()
-
-    # Step 4: Merge all cache to JSON files
-    print("\nMerging cache to JSON files...", flush=True)
+    # Write to DB and merge JSON
+    print("\nWriting to DB...", flush=True)
+    write_agencies_to_db(agency_data_list)
     stats = merge_all_cache_to_json()
     for k, v in stats.items():
         print(f"  {k}: {v}")
 
-    # Final DB count
     conn = sqlite3.connect(DB_PATH)
     c = conn.cursor()
     c.execute("SELECT COUNT(*) FROM agencies")
@@ -388,9 +418,7 @@ def main():
     db_timetables = c.fetchone()[0]
     conn.close()
     print(f"\nDB total: {db_agencies} agencies, {db_timetables} timetables")
-    print(f"Cache: {len(os.listdir(CACHE_DIR))} agency files in {CACHE_DIR}")
     print("Done!")
-
 
 if __name__ == "__main__":
     main()
