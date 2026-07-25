@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-"""Split agency list into chunks for parallel processing.
-Outputs JSON array of chunks: [["1","2","3"], ["4","5","6"], ...]
+"""Split agency list into 20 chunks: 1 for Ungku Omar (agency 5), 19 for the rest.
+Outputs JSON array of chunks: [[{"id":"5","name":"..."}], [{"id":"1",...},...], ...]
 """
 import json
 import os
@@ -10,6 +10,7 @@ import urllib.request
 
 BASE_URL = "https://app.mypolycc.edu.my/polycctas/service/kelas/"
 CACHE_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "data", "cache")
+UNGKU_OMAR_ID = "5"
 
 def fetch_text(url):
     req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0"})
@@ -25,8 +26,6 @@ def extract_options(html, select_name):
             if v.strip()]
 
 def main():
-    chunk_size = int(sys.argv[1]) if len(sys.argv) > 1 else 5
-
     # Fetch agency list
     html = fetch_text(BASE_URL)
     agencies = extract_options(html, "agc")
@@ -46,12 +45,24 @@ def main():
         print("[]")
         return
 
-    # Split into chunks
-    chunks = []
-    for i in range(0, len(pending), chunk_size):
-        chunk = pending[i:i + chunk_size]
-        chunks.append([{"id": a["value"], "name": a["label"]} for a in chunk])
+    # Separate Ungku Omar (agency 5) from the rest
+    ungku_omar = [a for a in pending if a["value"] == UNGKU_OMAR_ID]
+    others = [a for a in pending if a["value"] != UNGKU_OMAR_ID]
 
+    chunks = []
+
+    # Chunk 1: Ungku Omar only (if pending)
+    if ungku_omar:
+        chunks.append([{"id": a["value"], "name": a["label"]} for a in ungku_omar])
+
+    # Chunks 2-20: split remaining into 19 chunks
+    if others:
+        chunk_size = max(1, -(-len(others) // 19))  # ceiling division
+        for i in range(0, len(others), chunk_size):
+            chunk = others[i:i + chunk_size]
+            chunks.append([{"id": a["value"], "name": a["label"]} for a in chunk])
+
+    print(f"Total chunks: {len(chunks)}", file=sys.stderr)
     print(json.dumps(chunks))
 
 if __name__ == "__main__":
