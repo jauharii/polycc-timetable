@@ -31,12 +31,13 @@ function TimetableContent({ initialData, agencyid, sessioncode }: TimetableViewe
   }, [agencyid, sessioncode]);
 
   const filteredEntries = useMemo(() => {
+    if (!query) return []; // Blank until selection made
     let entries = data.timetables;
-    if (filterType === 'class' && query) {
+    if (filterType === 'class') {
       entries = entries.filter(e => e.classcode === query);
-    } else if (filterType === 'lab' && query) {
+    } else if (filterType === 'lab') {
       entries = entries.filter(e => e.labname === query);
-    } else if (filterType === 'lecturer' && query) {
+    } else if (filterType === 'lecturer') {
       entries = entries.filter(e => e.lecturers.some(l => l.code === query));
     }
     return entries;
@@ -80,15 +81,23 @@ function TimetableContent({ initialData, agencyid, sessioncode }: TimetableViewe
 
       <div className="table-wrap poster-wrap">
         <div className="poster-headline">
-          {query.toUpperCase()} Sesi {sessioncode.slice(4) || ''} {data.session.session_name}
+          {query ? query.toUpperCase() + ' ' : ''}{data.session.session_name}
         </div>
         <div className="poster-agency">{data.agency.agencyname}</div>
-        <TimetableGrid rows={rows} filterType={filterType} />
+        {query ? (
+          <TimetableGrid rows={rows} filterType={filterType} />
+        ) : (
+          <div className="text-center py-12 text-gray-500">
+            Select a {filterType} to view timetable
+          </div>
+        )}
       </div>
 
-      <div className="details">
-        <CourseTable courseRows={courseRows} />
-      </div>
+      {query && courseRows.length > 0 && (
+        <div className="details">
+          <CourseTable courseRows={courseRows} />
+        </div>
+      )}
     </>
   );
 }

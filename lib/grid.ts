@@ -12,65 +12,68 @@ export function buildGrid(entries: TimetableEntry[], courses: Record<string, Cou
     details.push(entry);
   }
 
+  const mergeLecturers = (target: TimetableEntry, source: TimetableEntry) => {
+    const existing = new Set(target.lecturers.map(l => `${l.code}-${l.name}`));
+    for (const lecturer of source.lecturers || []) {
+      const key = `${lecturer.code}-${lecturer.name}`;
+      if (!existing.has(key)) {
+        target.lecturers.push(lecturer);
+        existing.add(key);
+      }
+    }
+  };
+
   const rows: GridRow[] = [];
 
   for (const [dayCode, dayName] of DAY_ORDER) {
-    const row: GridRow = { day_code: dayCode, day_name: dayName, cells: [] };
-    let hasAny = false;
-    let currentCourse: string | null = null;
-    let currentSpan = 0;
-    let currentItems: TimetableEntry[] = [];
-
-    for (const hour of TIME_ORDER) {
+    // Step 1: exactly 10 slots (one per hour), merging duplicate course+lab within a slot.
+    const slots = TIME_ORDER.map(hour => {
       const items = grouped[`${dayCode}-${hour}`] || [];
-      const merged: TimetableEntry[] = [];
-
+      const merged: (TimetableEntry & { coursename: string })[] = [];
       for (const item of items) {
-        if (merged.length && merged[merged.length - 1].coursecode === item.coursecode && merged[merged.length - 1].labname === item.labname) {
-          const existing = new Set(merged[merged.length - 1].lecturers.map(l => `${l.code}-${l.name}`));
-          for (const lecturer of item.lecturers || []) {
-            const key = `${lecturer.code}-${lecturer.name}`;
-            if (!existing.has(key)) {
-              merged[merged.length - 1].lecturers.push(lecturer);
-              existing.add(key);
-            }
-          }
+        const last = merged[merged.length - 1];
+        if (last && last.coursecode === item.coursecode && last.labname === item.labname) {
+          mergeLecturers(last, item);
         } else {
-          merged.push({ ...item, coursename: courses[item.coursecode]?.coursename || '' } as TimetableEntry & { coursename: string });
+          merged.push({ ...item, coursename: courses[item.coursecode]?.coursename || '' });
         }
       }
+      return { hour, items: merged };
+    });
 
-      if (!merged.length) {
-        if (currentSpan > 0) {
-          row.cells.push({ hour, label: TIME_LABELS[hour], items: currentItems, span: currentSpan });
-          currentSpan = 0;
-          currentItems = [];
-        }
-        row.cells.push({ hour, label: TIME_LABELS[hour], items: [], span: 1 });
+    // Step 2: merge consecutive single-item slots with same course+lab into spans.
+    // Each slot is consumed exactly once -> sum of spans === TIME_ORDER.length (10),
+    // and every cell's `hour` is its unique span-start -> unique React keys.
+    const cells: GridCell[] = [];
+    let hasAny = false;
+    let i = 0;
+    while (i < TIME_ORDER.length) {
+      const slot = slots[i];
+      if (slot.items.length === 0) {
+        cells.push({ hour: slot.hour, label: TIME_LABELS[slot.hour], items: [], span: 1 });
+        i++;
         continue;
       }
-
-      if (currentSpan === 0) {
-        currentCourse = merged[0].coursecode;
-        currentItems = merged;
-        currentSpan = 1;
-      } else if (merged[0].coursecode === currentCourse) {
-        currentSpan++;
-      } else {
-        row.cells.push({ hour, label: TIME_LABELS[hour], items: currentItems, span: currentSpan });
-        currentCourse = merged[0].coursecode;
-        currentItems = merged;
-        currentSpan = 1;
-      }
       hasAny = true;
+      const first = slot.items[0];
+      let span = 1;
+      let j = i + 1;
+      while (
+        j < TIME_ORDER.length &&
+        slot.items.length === 1 &&
+        slots[j].items.length === 1 &&
+        slots[j].items[0].coursecode === first.coursecode &&
+        slots[j].items[0].labname === first.labname
+      ) {
+        mergeLecturers(first, slots[j].items[0]);
+        span++;
+        j++;
+      }
+      cells.push({ hour: slot.hour, label: TIME_LABELS[slot.hour], items: slot.items, span });
+      i = j;
     }
 
-    if (currentSpan > 0) {
-      const lastHour = row.cells.length ? row.cells[row.cells.length - 1].hour : TIME_ORDER[0];
-      row.cells.push({ hour: lastHour, label: TIME_LABELS[lastHour], items: currentItems, span: currentSpan });
-    }
-
-    if (hasAny) rows.push(row);
+    if (hasAny) rows.push({ day_code: dayCode, day_name: dayName, cells });
   }
 
   return { rows, details };

@@ -5,6 +5,7 @@
 @layer base {
   body {
     @apply m-0 font-[Arial,Helvetica,sans-serif] bg-white text-[#111];
+    overflow-y: scroll; /* prevent layout shift when scrollbar appears/disappears */
   }
 }
 
@@ -36,6 +37,10 @@
 
 .filters button[type="button"] {
   @apply bg-[#444] text-white cursor-pointer;
+}
+
+.table-wrap {
+  @apply w-full;
 }
 
 .poster-wrap {

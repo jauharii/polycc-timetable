@@ -40,7 +40,7 @@ export default function TimetableGrid({ rows, filterType }: Props) {
             <th className="day-name">{row.day_name}</th>
             {row.cells.map((cell, ci) => (
               <td
-                key={`${row.day_code}-${cell.hour}`}
+                key={`${row.day_code}-${ci}`}
                 className="poster-cell"
                 colSpan={cell.span}
               >
