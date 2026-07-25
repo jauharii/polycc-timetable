@@ -92,7 +92,7 @@
 
 .day-name {
   width: 50mm;
-  @apply text-center text-[16px] font-normal leading-[1.1] px-1 break-words;
+  @apply text-center text-[24px] font-normal leading-[1.1] px-1 break-words;
   overflow-wrap: anywhere;
 }
 
@@ -105,7 +105,7 @@
 }
 
 .poster-course {
-  @apply text-[12px] leading-[1.1] font-normal mb-[3mm] max-w-full break-words;
+  @apply text-[24px] leading-[1.1] font-normal mb-[3mm] max-w-full break-words;
   overflow-wrap: anywhere;
 }
 
@@ -130,97 +130,35 @@
 
 @media print {
   html, body {
-    @apply bg-white;
-    width: 297mm;
-    height: 210mm;
     -webkit-print-color-adjust: exact;
     print-color-adjust: exact;
-  }
-
-  .page {
-    @apply max-w-[297mm] m-0 px-[6mm];
   }
 
   .toolbar {
     @apply hidden !important;
   }
 
-  .poster-headline {
-    @apply text-[18px] mb-0.5 leading-[1.1];
-  }
-
-  .poster-agency {
-    @apply text-[10px] mb-0.5;
-  }
-
   .table-wrap, .details {
-    @apply m-0 p-0 border-0 rounded-none break-inside-avoid;
+    break-inside: avoid;
     page-break-inside: avoid;
   }
 
-  .poster-table {
-    @apply w-full border-[3px] border-black border-collapse border-separate !important;
-    border-spacing: 0;
-  }
-
-  .poster-table th,
-  .poster-table td {
-    @apply border border-black p-0;
-  }
-
-  .day-corner {
-    width: 50mm;
-    height: 8mm;
-  }
-
-  .time-head {
-    height: 8mm;
-  }
-
-  .time-index {
-    @apply text-[11px] m-0 leading-none;
-  }
-
-  .time-label {
-    @apply text-[7px] whitespace-nowrap;
-  }
-
-  .day-name {
-    width: 50mm;
-    @apply text-[12px] px-[2px] leading-none;
-  }
-
-  .poster-cell {
-    height: 14mm;
-  }
-
-  .poster-slot {
-    @apply min-h-0 h-full p-[2px];
-  }
-
-  .poster-course {
-    @apply text-[9px] mb-[2px] leading-none;
-  }
-
-  .poster-room {
-    @apply text-[7px] leading-none;
-  }
-
-  .details {
-    @apply mt-[4mm];
-  }
-
+  /* border-collapse:collapse drops cell borders at page breaks.
+     Use separate + per-cell right/bottom so every grid line survives. */
   .detail-table {
-    @apply w-full text-[8px] border-collapse border-separate border-[3px] border-black !important;
+    border-collapse: separate;
     border-spacing: 0;
   }
-
   .detail-table th,
   .detail-table td {
-    @apply p-[2px_4px] border border-black;
+    border-right: 1px solid #cfcfcf;
+    border-bottom: 1px solid #cfcfcf;
   }
-
   .detail-table thead th {
-    @apply bg-white font-bold;
+    border-top: 1px solid #cfcfcf;
+  }
+  .detail-table th:first-child,
+  .detail-table td:first-child {
+    border-left: 1px solid #cfcfcf;
   }
 }

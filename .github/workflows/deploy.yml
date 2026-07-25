@@ -2,7 +2,7 @@ name: Deploy to GitHub Pages
 
 on:
   schedule:
-    - cron: '0 2 1 * *'   # Monthly: 1st day, 02:00 UTC (10:00 MYT)
+    - cron: '0 19 * * 0'   # Weekly: Sunday 19:00 UTC = Monday 03:00 GMT+8
   workflow_dispatch: {}
 
 permissions:

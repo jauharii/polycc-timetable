@@ -15,6 +15,8 @@ export interface TimetableEntry {
   classcode: string;
   labname: string;
   lecturers: Lecturer[];
+  coursename?: string;
+  shortcode?: string;
 }
 
 export interface Lecturer {
@@ -53,6 +55,7 @@ export interface GridRow {
 export interface CourseRow {
   coursecode: string;
   coursename: string;
+  shortcode: string;
   rowspan: number;
   lecturers: { lecturercode: string; lecturername: string }[];
 }

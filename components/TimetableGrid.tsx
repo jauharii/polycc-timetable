@@ -46,7 +46,7 @@ export default function TimetableGrid({ rows, filterType }: Props) {
               >
                 {cell.items.map((item, ii) => (
                   <div key={ii} className="poster-slot">
-                    <div className="poster-course">{item.coursecode}</div>
+                    <div className="poster-course">{item.shortcode || item.coursecode}</div>
                     {filterType === 'class' && (
                       <div className="poster-room">{item.labname}</div>
                     )}

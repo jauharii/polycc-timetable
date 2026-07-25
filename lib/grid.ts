@@ -1,5 +1,17 @@
 import { DAY_ORDER, TIME_ORDER, TIME_LABELS, TimetableEntry, Course, GridRow, GridCell, CourseRow } from './types';
 
+const STOP_WORDS = new Set(['dan', 'and', 'of', '&', 'for', 'untuk', 'dalam', 'the', 'a', 'an', 'di', 'ke', 'dari', 'pada', 'dengan', 'or', 'atau']);
+
+function shortCode(name: string): string {
+  if (name.toLowerCase().includes('kokurikulum')) return 'KOKU';
+  return name
+    .trim()
+    .split(/\s+/)
+    .filter(w => w && !STOP_WORDS.has(w.toLowerCase()))
+    .map(w => w[0].toUpperCase())
+    .join('');
+}
+
 export function buildGrid(entries: TimetableEntry[], courses: Record<string, Course>): { rows: GridRow[]; details: TimetableEntry[] } {
   const grouped: Record<string, TimetableEntry[]> = {};
   const details: TimetableEntry[] = [];
@@ -35,7 +47,8 @@ export function buildGrid(entries: TimetableEntry[], courses: Record<string, Cou
         if (last && last.coursecode === item.coursecode && last.labname === item.labname) {
           mergeLecturers(last, item);
         } else {
-          merged.push({ ...item, coursename: courses[item.coursecode]?.coursename || '' });
+          const coursename = courses[item.coursecode]?.coursename || '';
+          merged.push({ ...item, coursename, shortcode: shortCode(coursename) || item.coursecode });
         }
       }
       return { hour, items: merged };
@@ -114,6 +127,7 @@ export function buildCourseRows(details: TimetableEntry[], courses: Record<strin
   return Object.values(grouped).map(item => ({
     coursecode: item.coursecode,
     coursename: item.coursename,
+    shortcode: shortCode(item.coursename) || item.coursecode,
     rowspan: item.lecturers.length || 1,
     lecturers: item.lecturers.length ? item.lecturers : [{ lecturercode: '', lecturername: '' }],
   }));

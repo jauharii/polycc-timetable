@@ -8,6 +8,7 @@ import { buildGrid, buildCourseRows } from '@/lib/grid';
 import TimetableGrid from '@/components/TimetableGrid';
 import CourseTable from '@/components/CourseTable';
 import FilterTabs from '@/components/FilterTabs';
+import AgencySessionNav from '@/components/AgencySessionNav';
 
 interface TimetableViewerProps {
   initialData: TimetableData;
@@ -52,11 +53,8 @@ function TimetableContent({ initialData, agencyid, sessioncode }: TimetableViewe
 
   return (
     <>
-      <Link href={`/a/${agencyid}`} className="text-blue-600 hover:underline mb-4 inline-block">
-        &larr; {data.agency.agencyname}
-      </Link>
-
       <div className="toolbar">
+        <AgencySessionNav currentAgencyId={agencyid} currentSessionCode={sessioncode} />
         <div className="filters">
           <FilterTabs
             filterType={filterType}
@@ -64,16 +62,19 @@ function TimetableContent({ initialData, agencyid, sessioncode }: TimetableViewe
           />
           <label>
             <span className="text-sm font-medium">{filterType.charAt(0).toUpperCase() + filterType.slice(1)}</span>
-            <select
+            <input
+              list={`${filterType}-options`}
               value={query}
               onChange={(e) => setQuery(e.target.value)}
+              placeholder={`Select ${filterType}...`}
+              aria-label={filterType}
               className="w-full"
-            >
-              <option value="">Select {filterType}...</option>
-              {options.map(opt => (
-                <option key={opt} value={opt}>{opt}</option>
+            />
+            <datalist id={`${filterType}-options`}>
+              {options.map((opt) => (
+                <option key={opt} value={opt} />
               ))}
-            </select>
+            </datalist>
           </label>
           <button type="button" onClick={() => window.print()}>Print</button>
         </div>
