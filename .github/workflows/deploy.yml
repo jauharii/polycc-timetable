@@ -55,8 +55,10 @@ jobs:
         run: mkdir -p data/cache
 
       - name: Scrape chunk
+        env:
+          CHUNK_JSON: ${{ toJson(matrix.chunk) }}
         run: |
-          python3 import_polycc.py --agencies '${{ toJson(matrix.chunk) }}'
+          python3 import_polycc.py --agencies "$CHUNK_JSON"
 
       - name: Upload cache artifact
         uses: actions/upload-artifact@v4
