@@ -55,12 +55,18 @@ def main():
     if ungku_omar:
         chunks.append([{"id": a["value"], "name": a["label"]} for a in ungku_omar])
 
-    # Chunks 2-20: split remaining into 19 chunks
+    # Chunks 2-20: split remaining into exactly 19 chunks (distribute evenly)
     if others:
-        chunk_size = max(1, -(-len(others) // 19))  # ceiling division
-        for i in range(0, len(others), chunk_size):
-            chunk = others[i:i + chunk_size]
+        num_chunks = min(19, len(others))  # don't create more chunks than agencies
+        base_size = len(others) // num_chunks
+        remainder = len(others) % num_chunks
+        idx = 0
+        for i in range(num_chunks):
+            # First 'remainder' chunks get 1 extra agency
+            size = base_size + (1 if i < remainder else 0)
+            chunk = others[idx:idx + size]
             chunks.append([{"id": a["value"], "name": a["label"]} for a in chunk])
+            idx += size
 
     print(f"Total chunks: {len(chunks)}", file=sys.stderr)
     print(json.dumps(chunks))
