@@ -77,7 +77,7 @@ export default function AgencySessionNav({ currentAgencyId, currentSessionCode }
   };
 
   return (
-    <div className="filters mb-4">
+    <div className="agency-session-nav mb-4">
       <label>
         <span className="text-sm font-medium">Agency</span>
         <input
@@ -86,7 +86,6 @@ export default function AgencySessionNav({ currentAgencyId, currentSessionCode }
           onChange={(e) => onAgencyChange(e.target.value)}
           placeholder="Search agency..."
           aria-label="Agency"
-          className="w-full"
         />
         <datalist id="nav-agency-options">
           {agencies.map((a) => (
@@ -103,7 +102,6 @@ export default function AgencySessionNav({ currentAgencyId, currentSessionCode }
           onChange={(e) => onSessionChange(e.target.value)}
           placeholder={selectedAgency ? 'Search session...' : 'Select agency first'}
           aria-label="Session"
-          className="w-full"
         />
         <datalist id="nav-session-options">
           {sessions.map((s) => (

@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { TimetableData } from '@/lib/types';
 import { buildGrid, buildCourseRows } from '@/lib/grid';
 import TimetableGrid from '@/components/TimetableGrid';
+import TimetableGridMobile from '@/components/TimetableGridMobile';
 import CourseTable from '@/components/CourseTable';
 import FilterTabs from '@/components/FilterTabs';
 import AgencySessionNav from '@/components/AgencySessionNav';
@@ -86,7 +87,14 @@ function TimetableContent({ initialData, agencyid, sessioncode }: TimetableViewe
         </div>
         <div className="poster-agency">{data.agency.agencyname}</div>
         {query ? (
-          <TimetableGrid rows={rows} filterType={filterType} />
+          <>
+            <div className="hidden md:block">
+              <TimetableGrid rows={rows} filterType={filterType} />
+            </div>
+            <div className="md:hidden">
+              <TimetableGridMobile rows={rows} filterType={filterType} />
+            </div>
+          </>
         ) : (
           <div className="text-center py-12 text-gray-500">
             Select a {filterType} to view timetable

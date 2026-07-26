@@ -23,9 +23,21 @@ CACHE_DIR = os.path.join(DATA_DIR, "cache")
 DB_PATH = os.path.join(DATA_DIR, "timetable.db")
 
 DAY_CODES = {
-    "ISN": "01", "SEL": "02", "RAB": "03", "KHA": "04",
-    "JUM": "05", "SAB": "06", "AHD": "07",
+    "AHD": "01", "ISN": "02", "SEL": "03", "RAB": "04",
+    "KHA": "05", "JUM": "06", "SAB": "07",
 }
+
+SESS_LABELS = {"1": "I", "2": "II"}
+
+def normalize_session_name(code):
+    """Derive clean session name from sessioncode YYYYX.
+    20241 -> 'I: 2024/2025', 20262 -> 'II: 2026/2027', 20263 -> 'SEM PENDEK 2026'."""
+    if len(code) == 5 and code[:4].isdigit() and code[4].isdigit():
+        year, sess = code[:4], code[4]
+        if sess == "3":
+            return f"SEM PENDEK {year}"
+        return f"{SESS_LABELS.get(sess, sess)}: {year}/{int(year)+1}"
+    return code
 
 DB_SCHEMA = """
 PRAGMA journal_mode = WAL;
@@ -139,7 +151,7 @@ def fetch_agency(agencyid, agencyname):
         print(f"  SKIP {agencyid}: agency page failed: {e}", flush=True)
         return result
 
-    sessions = [{"sessioncode": s["value"], "session_name": s["label"]}
+    sessions = [{"sessioncode": s["value"], "session_name": normalize_session_name(s["value"])}
                 for s in extract_options(agency_html, "sesi")]
     departments = extract_options(agency_html, "dep")
     if not departments:

@@ -27,7 +27,12 @@
       "Bash(npm install)",
       "Bash(npm run *)",
       "Bash(npx *)",
-      "Bash(node *)"
+      "Bash(node *)",
+      "Bash(git add *)",
+      "Bash(git commit *)",
+      "Bash(git push *)",
+      "Bash(gh *)",
+      "Bash(kill *)"
     ]
   },
   "$version": 4

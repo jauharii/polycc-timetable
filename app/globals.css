@@ -10,25 +10,25 @@
 }
 
 .page {
-  @apply max-w-[297mm] mx-auto p-6;
+  @apply max-w-[297mm] mx-auto px-4 py-4 md:px-6 md:py-6;
 }
 
 .toolbar, .details {
-  @apply bg-white border border-[#d9d9d9] rounded-lg p-4 mb-6;
+  @apply bg-white border border-[#d9d9d9] rounded-lg p-4 mb-4 md:mb-6;
 }
 
 .filters {
-  @apply flex gap-3 items-end flex-wrap;
+  @apply flex flex-col md:flex-row gap-3 items-stretch md:items-end flex-wrap;
 }
 
 .filters label {
-  @apply grid gap-1.5 min-w-[220px];
+  @apply grid gap-1.5 w-full md:min-w-[220px];
 }
 
 .filters select,
 .filters input,
 .filters button {
-  @apply h-10 border border-[#bdbdbd] rounded-md px-3 text-base bg-white;
+  @apply h-10 border border-[#bdbdbd] rounded-md px-3 text-base bg-white w-full md:w-auto;
 }
 
 .filters button[type="submit"] {
@@ -48,11 +48,11 @@
 }
 
 .poster-headline {
-  @apply text-center text-[72px] font-normal leading-[1.05] mb-3;
+  @apply text-center text-3xl md:text-4xl lg:text-[48px] xl:text-[72px] font-normal leading-[1.1] mb-3;
 }
 
 .poster-agency {
-  @apply text-[24px] mb-0.5;
+  @apply text-lg md:text-xl lg:text-[24px] mb-0.5 text-center;
 }
 
 .timetable, .detail-table {
@@ -114,6 +114,63 @@
   overflow-wrap: anywhere;
 }
 
+/* Mobile transposed timetable: times as rows, days as columns */
+.timetable-mobile {
+  @apply w-full border-collapse;
+  table-layout: fixed;
+  border: 2px solid #111;
+}
+
+.timetable-mobile th,
+.timetable-mobile td {
+  border: 1px solid #111;
+  vertical-align: top;
+  background: #fff;
+}
+
+.timetable-mobile thead th {
+  @apply bg-[#111] text-white text-[11px] font-bold text-center py-2 px-1;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.timetable-mobile .time-corner {
+  @apply bg-[#111] text-white text-[10px] font-bold;
+  width: 46px;
+}
+
+.timetable-mobile .time-cell {
+  @apply text-center bg-[#f3f3f3] py-1.5 px-0.5;
+  width: 46px;
+}
+
+.timetable-mobile .time-num {
+  @apply block text-[11px] font-bold leading-none;
+}
+
+.timetable-mobile .time-hr {
+  @apply block text-[9px] text-gray-600 leading-tight;
+}
+
+.timetable-mobile .slot-cell {
+  @apply p-1;
+}
+
+.timetable-mobile .slot-item {
+  @apply text-center mb-1.5 last:mb-0;
+}
+
+.timetable-mobile .slot-code {
+  @apply text-[11px] font-bold leading-tight break-words;
+  overflow-wrap: anywhere;
+}
+
+.timetable-mobile .slot-room {
+  @apply text-[9px] text-gray-700 leading-tight break-words;
+  overflow-wrap: anywhere;
+}
+
 .detail-table th,
 .detail-table td {
   @apply border border-[#cfcfcf] p-[10px] align-top;
@@ -121,6 +178,47 @@
 
 .detail-table thead th {
   @apply bg-[#f3f3f3] text-left;
+}
+
+/* Mobile CourseTable horizontal scroll */
+.detail-table-wrap {
+  @apply overflow-x-auto w-full;
+}
+
+/* Filter tabs: one row of equal-width buttons (fits Note 9 and up) */
+.filter-tabs {
+  @apply flex gap-2 w-full md:w-auto;
+}
+
+.filter-tabs button {
+  @apply flex-1 md:flex-none px-3 py-2 text-sm font-medium rounded-md transition-colors whitespace-nowrap;
+}
+
+/* Mobile responsive agency/session nav */
+.agency-session-nav {
+  @apply flex flex-col md:flex-row gap-3 items-stretch md:items-end flex-wrap;
+}
+
+.agency-session-nav label {
+  @apply grid gap-1.5 w-full md:min-w-[220px];
+}
+
+.agency-session-nav input {
+  @apply h-10 border border-[#bdbdbd] rounded-md px-3 text-base bg-white w-full md:w-auto;
+}
+
+/* Toolbar responsive layout */
+.toolbar .filters > div:first-child { /* FilterTabs container */
+  @apply w-full md:w-auto;
+}
+
+.toolbar .filters > label:nth-child(2), /* Class/Lab/Lecturer input */
+.toolbar .filters > label:nth-child(3) {
+  @apply w-full md:w-auto;
+}
+
+.toolbar .filters > button {
+  @apply w-full md:w-auto mt-2 md:mt-0;
 }
 
 @page {
@@ -143,8 +241,6 @@
     page-break-inside: avoid;
   }
 
-  /* border-collapse:collapse drops cell borders at page breaks.
-     Use separate + per-cell right/bottom so every grid line survives. */
   .detail-table {
     border-collapse: separate;
     border-spacing: 0;

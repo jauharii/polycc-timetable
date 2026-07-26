@@ -61,13 +61,13 @@ export interface CourseRow {
 }
 
 export const DAY_ORDER: [string, string][] = [
-  ['01', 'Monday'],
-  ['02', 'Tuesday'],
-  ['03', 'Wednesday'],
-  ['04', 'Thursday'],
-  ['05', 'Friday'],
-  ['06', 'Saturday'],
-  ['07', 'Sunday'],
+  ['01', 'Sunday'],
+  ['02', 'Monday'],
+  ['03', 'Tuesday'],
+  ['04', 'Wednesday'],
+  ['05', 'Thursday'],
+  ['06', 'Friday'],
+  ['07', 'Saturday'],
 ];
 
 export const TIME_ORDER = ['08', '09', '10', '11', '12', '13', '14', '15', '16', '17'];

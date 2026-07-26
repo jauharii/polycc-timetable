@@ -37,7 +37,7 @@ export default function TimetableGrid({ rows, filterType }: Props) {
       <tbody>
         {rows.map((row) => (
           <tr key={row.day_code}>
-            <th className="day-name">{row.day_name}</th>
+            <th className="day-name">{row.day_name.slice(0, 3)}</th>
             {row.cells.map((cell, ci) => (
               <td
                 key={`${row.day_code}-${ci}`}
