@@ -144,6 +144,7 @@ def fetch_agency(agencyid, agencyname):
         "sessions": [], "departments": [], "classes": [],
         "courses": {}, "lecturers": [], "labs": {}, "timetables": [],
         "_seen_lecturers": set(),
+        "_lecturer_names": {},
     }
     try:
         agency_html = fetch_text(BASE_URL + "?agc=" + agencyid)
@@ -214,12 +215,18 @@ def fetch_agency(agencyid, agencyname):
                     lecturername = entry.get("LecturerName", "")
                     labname = entry.get("VEN", "")
                     coursecode = re.sub(r"\([^)]*\)", "", entry.get("SBJ", "")).strip()
+                    d1 = entry.get("d1", "")
+                    # Parse all lecturer codes from d1 (comma-separated); fall back to NickName.
+                    codes = [c.strip() for c in d1.split(",") if c.strip()] if d1 else ([lecturercode] if lecturercode else [])
                     lecturers_list = []
-                    if lecturercode:
-                        if lecturercode not in result["_seen_lecturers"]:
-                            result["_seen_lecturers"].add(lecturercode)
-                            result["lecturers"].append({"lecturercode": lecturercode, "lecturername": lecturername, "agencyid": agencyid})
-                        lecturers_list.append({"code": lecturercode, "name": lecturername, "agencyid": agencyid})
+                    for code in codes:
+                        name = lecturername if code == lecturercode else ""  # primary gets name, others unknown
+                        if name:
+                            result["_lecturer_names"][code] = name
+                        if code not in result["_seen_lecturers"]:
+                            result["_seen_lecturers"].add(code)
+                            result["lecturers"].append({"lecturercode": code, "lecturername": name, "agencyid": agencyid})
+                        lecturers_list.append({"code": code, "name": name, "agencyid": agencyid})
                     if labname:
                         result["labs"][labname] = {"labname": labname}
                     result["timetables"].append({
@@ -227,6 +234,18 @@ def fetch_agency(agencyid, agencyname):
                         "lecturers": lecturers_list, "labname": labname,
                         "classcode": classcode, "sessioncode": sessioncode, "department": dep,
                     })
+
+    # Backfill lecturer names: a lecturer seen first as non-primary (blank name)
+    # may appear as primary (named) in a later slot — propagate the known name.
+    names = result["_lecturer_names"]
+    for lec in result["lecturers"]:
+        if not lec["lecturername"]:
+            lec["lecturername"] = names.get(lec["lecturercode"], "")
+    for t in result["timetables"]:
+        for lec in t["lecturers"]:
+            if not lec["name"]:
+                lec["name"] = names.get(lec["code"], "")
+
     return result
 
 def save_to_cache(agencyid, data):

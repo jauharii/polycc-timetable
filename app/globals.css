@@ -7,6 +7,11 @@
     @apply m-0 font-[Arial,Helvetica,sans-serif] bg-white text-[#111];
     overflow-y: scroll; /* prevent layout shift when scrollbar appears/disappears */
   }
+  /* Force light scheme so native datalist dropdown renders solid white, not transparent (mobile dark mode) */
+  input, select, datalist, option {
+    color-scheme: light;
+    background-color: #fff;
+  }
 }
 
 .page {
@@ -31,11 +36,11 @@
   @apply h-10 border border-[#bdbdbd] rounded-md px-3 text-base bg-white w-full md:w-auto;
 }
 
-.filters button[type="submit"] {
+.filters > button[type="submit"] {
   @apply bg-black text-white cursor-pointer;
 }
 
-.filters button[type="button"] {
+.filters > button[type="button"] {
   @apply bg-[#444] text-white cursor-pointer;
 }
 
@@ -48,7 +53,7 @@
 }
 
 .poster-headline {
-  @apply text-center text-3xl md:text-4xl lg:text-[48px] xl:text-[72px] font-normal leading-[1.1] mb-3;
+  @apply text-center text-3xl md:text-4xl lg:text-[42px] xl:text-[48px] font-normal leading-[1.1] mb-3;
 }
 
 .poster-agency {
@@ -185,13 +190,46 @@
   @apply overflow-x-auto w-full;
 }
 
-/* Filter tabs: one row of equal-width buttons (fits Note 9 and up) */
+/* Filter tabs: one row of equal-width dark buttons (fits Note 9 and up).
+   bg/color owned here (via aria-checked) — overrides .filters button's bg-white. */
 .filter-tabs {
   @apply flex gap-2 w-full md:w-auto;
 }
 
 .filter-tabs button {
-  @apply flex-1 md:flex-none px-3 py-2 text-sm font-medium rounded-md transition-colors whitespace-nowrap;
+  @apply flex-1 md:flex-none h-10 px-3 text-sm font-medium rounded-md transition-colors whitespace-nowrap border-0 cursor-pointer text-white bg-[#444];
+}
+
+.filter-tabs button:hover {
+  @apply bg-[#555];
+}
+
+.filter-tabs button[aria-checked="true"] {
+  @apply bg-black;
+}
+
+/* Combobox: custom dropdown (reliable on Android, solid white bg) */
+.combobox {
+  @apply relative w-full;
+}
+
+.combobox input {
+  @apply h-10 border border-[#bdbdbd] rounded-md px-3 text-base bg-white w-full;
+  color-scheme: light;
+}
+
+.combobox-list {
+  @apply absolute left-0 right-0 z-50 mt-1 max-h-64 overflow-y-auto bg-white border border-[#bdbdbd] rounded-md shadow-lg p-0 m-0;
+  list-style: none;
+}
+
+.combobox-list li button {
+  @apply w-full h-auto text-left px-3 py-2.5 text-base bg-white text-[#111] border-0 rounded-none cursor-pointer;
+}
+
+.combobox-list li button:hover,
+.combobox-list li button.highlight {
+  @apply bg-[#f0f0f0];
 }
 
 /* Mobile responsive agency/session nav */
@@ -201,10 +239,6 @@
 
 .agency-session-nav label {
   @apply grid gap-1.5 w-full md:min-w-[220px];
-}
-
-.agency-session-nav input {
-  @apply h-10 border border-[#bdbdbd] rounded-md px-3 text-base bg-white w-full md:w-auto;
 }
 
 /* Toolbar responsive layout */
@@ -222,7 +256,7 @@
 }
 
 @page {
-  size: A4 landscape;
+  size: A4 landscape; /* default: landscape */
   margin: 6mm;
 }
 
@@ -233,20 +267,39 @@
   }
 
   .toolbar {
-    @apply hidden !important;
+    display: none !important;
   }
 
-  .table-wrap, .details {
-    break-inside: avoid;
-    page-break-inside: avoid;
+  /* Print ALWAYS uses the desktop (wide) table, never the mobile transposed one */
+  .grid-desktop { display: block !important; }
+  .grid-mobile { display: none !important; }
+
+  .page {
+    max-width: none;
+    margin: 0;
+    padding: 0;
   }
+
+  /* Landscape (default) keeps website poster sizes: 24px course codes, 20mm cells.
+     Table is already w-full + table-layout:fixed so it fits the printable width. */
+  .poster-table { width: 100%; }
+
+  .poster-headline { font-size: 28px; margin-bottom: 2mm; }
+  .poster-agency { font-size: 13px; margin-bottom: 2mm; }
+
+  /* Keep timetable on one page; let course detail paginate below */
+  .table-wrap { break-inside: avoid; page-break-inside: avoid; }
+  .details { break-inside: auto; page-break-inside: auto; }
 
   .detail-table {
+    width: 100%;
     border-collapse: separate;
     border-spacing: 0;
   }
   .detail-table th,
   .detail-table td {
+    padding: 4px 6px;
+    font-size: 9px;
     border-right: 1px solid #cfcfcf;
     border-bottom: 1px solid #cfcfcf;
   }
@@ -257,4 +310,17 @@
   .detail-table td:first-child {
     border-left: 1px solid #cfcfcf;
   }
+}
+
+/* Portrait: shrink poster so the wide table fits the narrower page */
+@media print and (orientation: portrait) {
+  .day-corner, .day-name { width: 22mm; }
+  .day-name { font-size: 12px; }
+  .time-head { height: 10mm; }
+  .time-index { font-size: 10px; }
+  .time-label { font-size: 7px; }
+  .poster-cell { height: 14mm; }
+  .poster-course { font-size: 13px; margin-bottom: 1mm; }
+  .poster-room { font-size: 7px; }
+  .poster-headline { font-size: 20px; }
 }

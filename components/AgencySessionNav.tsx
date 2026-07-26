@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Agency, Session } from '@/lib/types';
+import Combobox from './Combobox';
 
 const NAV_KEY = 'polycc.lastNav';
 
@@ -48,6 +49,7 @@ export default function AgencySessionNav({ currentAgencyId, currentSessionCode }
   );
 
   const sessions = selectedAgency?.sessions ?? [];
+  const sessionOptions = sessions.map(sessionLabel);
 
   const persist = (agency?: Agency, session?: Session) => {
     if (!agency) return;
@@ -76,38 +78,30 @@ export default function AgencySessionNav({ currentAgencyId, currentSessionCode }
     }
   };
 
+  const agencyOptions = agencies.map((a) => a.agencyname);
+
   return (
     <div className="agency-session-nav mb-4">
       <label>
         <span className="text-sm font-medium">Agency</span>
-        <input
-          list="nav-agency-options"
+        <Combobox
+          options={agencyOptions}
           value={agencyInput}
-          onChange={(e) => onAgencyChange(e.target.value)}
+          onChange={onAgencyChange}
           placeholder="Search agency..."
-          aria-label="Agency"
+          ariaLabel="Agency"
         />
-        <datalist id="nav-agency-options">
-          {agencies.map((a) => (
-            <option key={a.agencyid} value={a.agencyname} />
-          ))}
-        </datalist>
       </label>
 
       <label>
         <span className="text-sm font-medium">Session</span>
-        <input
-          list="nav-session-options"
+        <Combobox
+          options={sessionOptions}
           value={sessionInput}
-          onChange={(e) => onSessionChange(e.target.value)}
+          onChange={onSessionChange}
           placeholder={selectedAgency ? 'Search session...' : 'Select agency first'}
-          aria-label="Session"
+          ariaLabel="Session"
         />
-        <datalist id="nav-session-options">
-          {sessions.map((s) => (
-            <option key={s.sessioncode} value={sessionLabel(s)} />
-          ))}
-        </datalist>
       </label>
     </div>
   );

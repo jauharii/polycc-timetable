@@ -3,11 +3,12 @@ import { DAY_ORDER, TIME_ORDER, TIME_LABELS, TimetableEntry, Course, GridRow, Gr
 const STOP_WORDS = new Set(['dan', 'and', 'of', '&', 'for', 'untuk', 'dalam', 'the', 'a', 'an', 'di', 'ke', 'dari', 'pada', 'dengan', 'or', 'atau']);
 
 function shortCode(name: string): string {
-  if (name.toLowerCase().includes('kokurikulum')) return 'KOKU';
+  const lower = name.toLowerCase();
+  if (lower.includes('kokurikulum') || lower.includes('ko-kurikulum')) return 'KOKU';
   return name
     .trim()
     .split(/\s+/)
-    .filter(w => w && !STOP_WORDS.has(w.toLowerCase()))
+    .filter(w => w && !STOP_WORDS.has(w.toLowerCase()) && !w.includes('(') && !w.includes(')'))
     .map(w => w[0].toUpperCase())
     .join('');
 }

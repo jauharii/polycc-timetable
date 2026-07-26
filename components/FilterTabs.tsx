@@ -15,11 +15,6 @@ export default function FilterTabs({ filterType, onFilterChange }: Props) {
           role="radio"
           aria-checked={filterType === type}
           onClick={() => onFilterChange(type)}
-          className={
-            filterType === type
-              ? 'bg-black text-white'
-              : 'bg-white text-black border border-gray-300 hover:bg-gray-50'
-          }
         >
           {type.charAt(0).toUpperCase() + type.slice(1)}
         </button>

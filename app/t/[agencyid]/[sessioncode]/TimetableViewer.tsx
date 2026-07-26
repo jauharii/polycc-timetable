@@ -10,6 +10,7 @@ import TimetableGridMobile from '@/components/TimetableGridMobile';
 import CourseTable from '@/components/CourseTable';
 import FilterTabs from '@/components/FilterTabs';
 import AgencySessionNav from '@/components/AgencySessionNav';
+import Combobox from '@/components/Combobox';
 
 interface TimetableViewerProps {
   initialData: TimetableData;
@@ -35,22 +36,42 @@ function TimetableContent({ initialData, agencyid, sessioncode }: TimetableViewe
   const filteredEntries = useMemo(() => {
     if (!query) return []; // Blank until selection made
     let entries = data.timetables;
+    const q = query.toLowerCase();
     if (filterType === 'class') {
-      entries = entries.filter(e => e.classcode === query);
+      entries = entries.filter(e => e.classcode.toLowerCase() === q);
     } else if (filterType === 'lab') {
-      entries = entries.filter(e => e.labname === query);
+      entries = entries.filter(e => e.labname.toLowerCase() === q);
     } else if (filterType === 'lecturer') {
-      entries = entries.filter(e => e.lecturers.some(l => l.code === query));
+      // Selected option is "CODE — Name"; typed input may be exact code or name.
+      const sepIdx = query.indexOf(' — ');
+      const code = sepIdx > -1 ? query.slice(0, sepIdx).trim().toLowerCase() : null;
+      entries = entries.filter(e => e.lecturers.some(l =>
+        code
+          ? l.code.toLowerCase() === code
+          : (l.code.toLowerCase() === q || l.name.toLowerCase() === q)
+      ));
     }
     return entries;
   }, [data, filterType, query]);
+
+  const lecturerOptions = useMemo(() => {
+    const map = new Map<string, string>();
+    for (const e of data.timetables) {
+      for (const l of e.lecturers) {
+        if (l.code && !map.has(l.code)) map.set(l.code, l.name || l.code);
+      }
+    }
+    return Array.from(map.entries())
+      .map(([code, name]) => `${code} — ${name}`)
+      .sort();
+  }, [data]);
 
   const { rows, courseRows } = useMemo(() => {
     const { rows, details } = buildGrid(filteredEntries, data.courses);
     return { rows, courseRows: buildCourseRows(details, data.courses) };
   }, [data, filteredEntries]);
 
-  const options = filterType === 'class' ? data.classes : filterType === 'lab' ? data.labs : data.lecturers;
+  const options = filterType === 'class' ? data.classes : filterType === 'lab' ? data.labs : lecturerOptions;
 
   return (
     <>
@@ -63,19 +84,13 @@ function TimetableContent({ initialData, agencyid, sessioncode }: TimetableViewe
           />
           <label>
             <span className="text-sm font-medium">{filterType.charAt(0).toUpperCase() + filterType.slice(1)}</span>
-            <input
-              list={`${filterType}-options`}
+            <Combobox
+              options={options}
               value={query}
-              onChange={(e) => setQuery(e.target.value)}
+              onChange={setQuery}
               placeholder={`Select ${filterType}...`}
-              aria-label={filterType}
-              className="w-full"
+              ariaLabel={filterType}
             />
-            <datalist id={`${filterType}-options`}>
-              {options.map((opt) => (
-                <option key={opt} value={opt} />
-              ))}
-            </datalist>
           </label>
           <button type="button" onClick={() => window.print()}>Print</button>
         </div>
@@ -88,10 +103,10 @@ function TimetableContent({ initialData, agencyid, sessioncode }: TimetableViewe
         <div className="poster-agency">{data.agency.agencyname}</div>
         {query ? (
           <>
-            <div className="hidden md:block">
+            <div className="grid-desktop hidden md:block">
               <TimetableGrid rows={rows} filterType={filterType} />
             </div>
-            <div className="md:hidden">
+            <div className="grid-mobile md:hidden">
               <TimetableGridMobile rows={rows} filterType={filterType} />
             </div>
           </>
