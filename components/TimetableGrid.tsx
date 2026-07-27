@@ -46,28 +46,28 @@ export default function TimetableGrid({ rows, filterType }: Props) {
               >
                 {cell.items.map((item, ii) => (
                   <div key={ii} className="poster-slot">
-                    <div className="poster-course">{item.shortcode || item.coursecode}</div>
-                    {filterType === 'class' && (
-                      <div className="poster-room">{item.labname}</div>
-                    )}
-                    {filterType === 'lecturer' && (
+                    {filterType === 'lab' ? (
                       <>
-                        <div className="poster-room">{item.labname}</div>
-                        <div className="poster-room">{item.classcode}</div>
-                      </>
-                    )}
-                    {filterType === 'lab' && (
-                      <>
+                        <div className="poster-course">{item.classcode}</div>
                         <div className="poster-room">
                           {item.lecturers.map((l, li) => (
                             <span key={li}>{li > 0 ? ', ' : ''}{l.code}</span>
                           ))}
                         </div>
-                        <div className="poster-room">{item.classcode}</div>
                       </>
-                    )}
-                    {filterType !== 'class' && filterType !== 'lab' && filterType !== 'lecturer' && (
-                      <div className="poster-room">{item.labname}</div>
+                    ) : (
+                      <>
+                        <div className="poster-course">{item.shortcode || item.coursecode}</div>
+                        {filterType === 'class' && (
+                          <div className="poster-room">{item.labname}</div>
+                        )}
+                        {filterType === 'lecturer' && (
+                          <>
+                            <div className="poster-room">{item.labname}</div>
+                            <div className="poster-room">{item.classcode}</div>
+                          </>
+                        )}
+                      </>
                     )}
                   </div>
                 ))}
