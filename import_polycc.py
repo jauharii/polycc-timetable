@@ -27,16 +27,28 @@ DAY_CODES = {
     "KHA": "05", "JUM": "06", "SAB": "07",
 }
 
-SESS_LABELS = {"1": "I", "2": "II"}
+# PolyCC session name mapping (code -> name)
+SESSION_NAMES = {
+    "20241": "2 : 2024/2025",
+    "20251": "1 : 2025/2026",
+    "20261": "1: 2026/2027",
+    "20262": "2 : 2025/2026",
+    "20263": "SEM PENDEK 2026",
+}
 
 def normalize_session_name(code):
-    """Derive clean session name from sessioncode YYYYX.
-    20241 -> 'I: 2024/2025', 20262 -> 'II: 2026/2027', 20263 -> 'SEM PENDEK 2026'."""
+    """Derive session name from sessioncode YYYYX (PolyCC format).
+    20251 -> '1 : 2025/2026', 20262 -> '2 : 2025/2026', 20263 -> 'SEM PENDEK 2026'."""
+    if code in SESSION_NAMES:
+        return SESSION_NAMES[code]
     if len(code) == 5 and code[:4].isdigit() and code[4].isdigit():
         year, sess = code[:4], code[4]
         if sess == "3":
             return f"SEM PENDEK {year}"
-        return f"{SESS_LABELS.get(sess, sess)}: {year}/{int(year)+1}"
+        if sess == "1":
+            return f"1 : {year}/{int(year)+1}"
+        if sess == "2":
+            return f"2 : {int(year)-1}/{year}"
     return code
 
 DB_SCHEMA = """
