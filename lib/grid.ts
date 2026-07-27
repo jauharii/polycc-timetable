@@ -2,7 +2,7 @@ import { DAY_ORDER, TIME_ORDER, TIME_LABELS, TimetableEntry, Course, GridRow, Gr
 
 const STOP_WORDS = new Set(['dan', 'and', 'of', '&', 'for', 'untuk', 'dalam', 'the', 'a', 'an', 'di', 'ke', 'dari', 'pada', 'dengan', 'or', 'atau']);
 
-function shortCode(name: string): string {
+export function shortCode(name: string): string {
   const lower = name.toLowerCase();
   if (lower.includes('kokurikulum') || lower.includes('ko-kurikulum')) return 'KOKU';
   return name

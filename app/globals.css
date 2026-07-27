@@ -255,6 +255,458 @@
   @apply w-full md:w-auto mt-2 md:mt-0;
 }
 
+
+
+/* Builder link button in timetable toolbar (styled like Print button) */
+.builder-link-btn {
+  @apply inline-flex items-center justify-center h-10 px-3 border-0 rounded-md bg-[#444] text-white no-underline cursor-pointer text-base;
+}
+.builder-link-btn:hover {
+  @apply bg-[#555];
+}
+
+/* ===== Timetable Builder ===== */
+.builder-head {
+  @apply flex items-center justify-between gap-3 mb-4 flex-wrap;
+}
+.builder-title {
+  @apply text-2xl font-normal m-0;
+}
+.builder-back {
+  @apply text-sm text-[#444] no-underline hover:underline;
+}
+
+.builder-config {
+  @apply grid gap-4;
+}
+.builder-config > label {
+  @apply grid gap-1.5 w-full md:max-w-[320px];
+}
+.builder-multi {
+  @apply grid gap-1.5;
+}
+.builder-addrow {
+  @apply flex gap-2 items-stretch w-full md:max-w-[420px];
+}
+.builder-addrow > div {
+  @apply flex-1;
+}
+.builder-addrow button {
+  @apply h-10 px-4 border-0 rounded-md bg-[#444] text-white cursor-pointer whitespace-nowrap;
+}
+.builder-addrow button:hover {
+  @apply bg-[#555];
+}
+
+.chip-row {
+  @apply flex flex-wrap gap-2 mt-1;
+}
+.chip {
+  @apply inline-flex items-center gap-1.5 bg-[#f0f0f0] border border-[#d9d9d9] rounded-full px-3 py-1 text-sm;
+}
+.chip button {
+  @apply border-0 bg-transparent cursor-pointer text-[#666] text-base leading-none p-0;
+}
+.chip button:hover {
+  @apply text-black;
+}
+
+.builder-suggest h2,
+.details h2 {
+  @apply text-lg font-normal mt-0 mb-3;
+}
+.builder-suggest ul {
+  @apply m-0 p-0 list-none grid gap-2;
+}
+.suggest {
+  @apply px-3 py-2 rounded-md border text-sm;
+}
+.suggest-drop {
+  @apply bg-[#fdecea] border-[#f5c6cb];
+}
+.suggest-change {
+  @apply bg-[#fff8e1] border-[#ffe082];
+}
+.suggest-unavailable {
+  @apply bg-[#f0f0f0] border-[#d9d9d9];
+}
+
+.plans-table td,
+.plans-table th {
+  @apply align-middle;
+}
+.plan-active {
+  @apply bg-[#f5f5f5];
+}
+.clash-badge {
+  @apply inline-block min-w-[28px] text-center rounded-full px-2 py-0.5 text-sm font-bold bg-[#e6f4ea] text-[#1e7e34];
+}
+.clash-badge.has-clash {
+  @apply bg-[#fdecea] text-[#c0392b];
+}
+.plan-place {
+  @apply flex items-center gap-2 text-sm flex-wrap;
+}
+.plan-arrow {
+  @apply text-[#444];
+}
+.plan-clash-note {
+  @apply text-[#c0392b] text-xs;
+}
+.plan-unplaced {
+  @apply text-[#888];
+}
+.plans-table button {
+  @apply h-9 px-3 border-0 rounded-md bg-[#444] text-white cursor-pointer text-sm whitespace-nowrap;
+}
+.plans-table button:hover {
+  @apply bg-[#555];
+}
+.plan-active .plans-table button,
+.plans-table .plan-active button {
+  @apply bg-black;
+}
+.free-line {
+  @apply mt-3 mb-0 text-sm text-[#444];
+}
+.plans-head {
+  @apply flex items-center justify-between gap-3 flex-wrap mb-3;
+}
+.plans-head h2 {
+  @apply m-0;
+}
+.plans-count {
+  @apply flex items-center gap-2 text-sm text-[#444];
+}
+.plans-count select {
+  @apply h-9 border border-[#bdbdbd] rounded-md px-2 text-sm bg-white;
+}
+/* Resolution cascade */
+.cascade {
+  @apply mb-4;
+}
+.cascade-summary {
+  @apply px-3 py-2 rounded-md text-sm font-medium mb-2;
+}
+.cascade-summary.ok {
+  @apply bg-[#e6f4ea] text-[#1e7e34];
+}
+.cascade-summary.warn {
+  @apply bg-[#fdecea] text-[#c0392b];
+}
+.cascade-steps {
+  @apply m-0 p-0 list-none grid gap-1.5;
+  counter-reset: step;
+}
+.cascade-steps li {
+  @apply flex items-center gap-2 flex-wrap px-3 py-2 rounded-md border text-sm;
+  counter-increment: step;
+}
+.cascade-steps li::before {
+  content: counter(step);
+  @apply inline-flex items-center justify-center w-5 h-5 rounded-full bg-[#444] text-white text-xs flex-shrink-0;
+}
+.cascade-steps li.step-ok {
+  @apply bg-[#f6fbf7] border-[#cfe8d4];
+}
+.cascade-steps li.step-clash {
+  @apply bg-[#fdf3f2] border-[#f5c6cb];
+}
+.step-course {
+  @apply font-bold;
+}
+.step-name {
+  @apply text-[#666] text-xs;
+}
+.step-arrow {
+  @apply text-[#444];
+}
+.step-status {
+  @apply ml-auto text-xs;
+}
+.step-ok .step-status {
+  @apply text-[#1e7e34];
+}
+.step-clash .step-status {
+  @apply text-[#c0392b];
+}
+
+
+
+/* Builder plan grid coloring (reuses .timetable-mobile base).
+   NOTE: no overflow-x here — an overflow ancestor creates a scroll container
+   that breaks the sticky day header from .timetable-mobile thead th.
+   The table is w-full + table-layout:fixed, so it never overflows anyway. */
+.plan-grid .slot-base .slot-code {
+  @apply text-[#111];
+}
+.plan-grid .slot-added {
+  @apply bg-[#e6f4ea] rounded px-0.5;
+}
+.plan-grid .slot-added .slot-code {
+  @apply text-[#1e7e34];
+}
+.plan-grid .slot-clash {
+  @apply bg-[#fdecea];
+}
+.plan-legend {
+  @apply flex flex-wrap gap-4 mt-2 text-xs text-[#444];
+}
+.plan-legend .lg {
+  @apply inline-block w-3 h-3 mr-1 border border-[#bbb] align-middle;
+}
+.plan-legend .lg-base {
+  @apply bg-white;
+}
+.plan-legend .lg-added {
+  @apply bg-[#e6f4ea];
+}
+.plan-legend .lg-clash {
+  @apply bg-[#fdecea];
+}
+/* Recommendation chain (cascade resolver) */
+.reco-steps {
+  @apply m-0 mb-4 p-0 list-none grid gap-1.5;
+  counter-reset: reco;
+}
+.reco-steps li {
+  @apply flex items-center gap-2 flex-wrap px-3 py-2 rounded-md border text-sm;
+  counter-increment: reco;
+}
+.reco-steps li::before {
+  content: counter(reco);
+  @apply inline-flex items-center justify-center w-5 h-5 rounded-full bg-[#444] text-white text-xs flex-shrink-0;
+}
+.reco-steps li.reco-add {
+  @apply bg-[#f6fbf7] border-[#cfe8d4];
+}
+.reco-steps li.reco-move {
+  @apply bg-[#fff8e1] border-[#ffe082];
+}
+.reco-steps li.reco-unavail {
+  @apply bg-[#f0f0f0] border-[#d9d9d9];
+}
+.reco-action {
+  @apply font-bold min-w-[44px];
+}
+.reco-add .reco-action {
+  @apply text-[#1e7e34];
+}
+.reco-move .reco-action {
+  @apply text-[#b8860b];
+}
+.reco-course {
+  @apply font-bold;
+}
+.reco-name {
+  @apply text-[#666] text-xs;
+}
+.reco-arrow {
+  @apply text-[#111];
+}
+.reco-clash {
+  @apply text-[#c0392b] text-xs;
+}
+.reco-resolved {
+  @apply ml-auto text-xs text-[#1e7e34] font-medium;
+}
+.reco-note {
+  @apply text-[#888] text-xs;
+}
+
+/* moved-course color in cascade grid */
+.plan-grid .slot-changed {
+  @apply bg-[#fff8e1] rounded px-0.5;
+}
+.plan-grid .slot-changed .slot-code {
+  @apply text-[#b8860b];
+}
+.plan-legend .lg-changed {
+  @apply bg-[#fff8e1];
+}
+.plan-grid .slot-ghost {
+  @apply bg-[#f0f0f0] rounded px-0.5 opacity-70;
+}
+.plan-grid .slot-ghost .slot-code {
+  @apply text-[#999] line-through;
+}
+.plan-grid .slot-ghost .slot-room {
+  @apply text-[#999];
+}
+.plan-legend .lg-ghost {
+  @apply bg-[#f0f0f0];
+}
+/* Course description table */
+.course-table-wrap {
+  @apply mt-5;
+}
+.course-table-title {
+  @apply text-base font-bold m-0 mb-2;
+}
+.course-table-scroll {
+  @apply overflow-x-auto;
+}
+.course-table {
+  @apply w-full border-collapse text-sm min-w-[560px];
+}
+.course-table th {
+  @apply text-left text-xs font-bold uppercase tracking-wide text-[#888] px-3 py-2 border-b-2 border-[#e5e5e5] bg-[#fafafa];
+}
+.course-table td {
+  @apply px-3 py-2 border-b border-[#efefef] align-top;
+}
+.course-table tbody tr {
+  @apply transition-colors;
+}
+.course-table tbody tr:hover {
+  @apply bg-[#f7f9fb];
+}
+.course-table .ct-code {
+  @apply font-mono font-bold whitespace-nowrap;
+}
+.course-table .ct-name {
+  @apply text-[#333];
+}
+.course-table .ct-class {
+  @apply whitespace-nowrap text-[#444];
+}
+.course-table .ct-short {
+  @apply font-bold whitespace-nowrap text-[#111];
+}
+.course-table .ct-lect {
+  @apply text-[#666] text-xs;
+}
+.course-table tr.ct-dropped .ct-code,
+.course-table tr.ct-dropped .ct-name {
+  @apply text-[#999] line-through;
+}
+.ct-chip {
+  @apply inline-block text-xs font-bold px-2.5 py-1 rounded-md whitespace-nowrap font-mono transition-shadow;
+}
+.course-table tbody tr:hover .ct-chip {
+  @apply shadow-sm;
+}
+.ct-chip-base {
+  @apply bg-[#ececec] text-[#555];
+}
+.ct-chip-moved {
+  @apply bg-[#fff8e1] text-[#b8860b] border border-[#ffe082];
+}
+.ct-chip-added {
+  @apply bg-[#e8f5e9] text-[#1e7e34] border border-[#c8e6c9];
+}
+.ct-chip-dropped {
+  @apply bg-[#fdecea] text-[#c0392b] border border-[#f5c6c0];
+}
+
+
+/* Ranked plans list (unified recommendation container) */
+.plans-hint {
+  @apply text-sm text-[#666] mt-0 mb-3;
+}
+.ranked-list {
+  @apply grid gap-2;
+}
+.ranked-card {
+  @apply text-left w-full border border-[#d9d9d9] rounded-lg p-3 bg-white cursor-pointer;
+}
+.ranked-card:hover {
+  @apply border-[#999];
+}
+.ranked-card.active {
+  @apply border-black bg-[#f7f7f7];
+}
+.ranked-top {
+  @apply flex items-center gap-2 flex-wrap mb-2;
+}
+.ranked-num {
+  @apply font-bold text-sm;
+}
+.changes-badge {
+  @apply inline-block bg-[#111] text-white text-xs font-bold px-2 py-0.5 rounded-full;
+}
+/* Friend profiles section */
+/* You / Friends config containers */
+.config-group {
+  @apply border border-[#e5e5e5] rounded-lg p-4 mb-4 bg-white;
+}
+.config-group-title {
+  @apply text-base font-bold m-0 mb-3 pb-2 border-b border-[#f0f0f0];
+}
+
+.friends-head {
+  @apply flex items-center justify-between mb-2;
+}
+.friends-head button {
+  @apply text-sm font-medium px-2.5 py-1 rounded-md border border-[#d9d9d9] bg-white cursor-pointer;
+}
+.friends-head button:hover {
+  @apply border-[#999];
+}
+.toggle-row {
+  @apply flex items-center gap-2 text-sm text-[#444] mb-3 cursor-pointer;
+}
+.toggle-row input {
+  @apply w-4 h-4;
+}
+.friend-card {
+  @apply border border-[#e0e0e0] rounded-lg p-3 mb-3 bg-[#fafafa];
+}
+.friend-card-head {
+  @apply flex items-center justify-between mb-2;
+}
+.friend-card-head button {
+  @apply text-xs text-[#c0392b] cursor-pointer bg-transparent border-0 p-0;
+}
+.friend-card .pick {
+  @apply block mb-2;
+}
+.pick-label {
+  @apply block text-xs font-medium text-[#666] mb-1;
+}
+
+/* drops + together badges */
+.drops-badge {
+  @apply inline-block bg-[#c0392b] text-white text-xs font-bold px-2 py-0.5 rounded-full;
+}
+.together-badge {
+  @apply inline-block bg-[#1e7e34] text-white text-xs font-bold px-2 py-0.5 rounded-full;
+}
+.change-list li.change-drop .change-classes {
+  @apply text-[#c0392b] font-medium;
+}
+
+
+.ranked-ok {
+  @apply ml-auto text-xs text-[#1e7e34] font-medium;
+}
+.ranked-warn {
+  @apply ml-auto text-xs text-[#c0392b] font-medium;
+}
+.ranked-nochange {
+  @apply text-sm text-[#666];
+}
+.change-list {
+  @apply m-0 p-0 list-none grid gap-1;
+}
+.change-list li {
+  @apply flex items-center gap-2 flex-wrap text-sm;
+}
+.change-course {
+  @apply font-bold;
+}
+.change-name {
+  @apply text-[#666] text-xs;
+}
+.change-classes {
+  @apply ml-auto text-sm text-[#444];
+}
+.change-classes strong {
+  @apply text-[#111];
+}
+
+
+
 @page {
   size: A4 landscape; /* default: landscape */
   margin: 6mm;

@@ -93,6 +93,7 @@ function TimetableContent({ initialData, agencyid, sessioncode }: TimetableViewe
             />
           </label>
           <button type="button" onClick={() => window.print()}>Print</button>
+          <Link href="/builder" className="builder-link-btn">Builder</Link>
         </div>
       </div>
 
