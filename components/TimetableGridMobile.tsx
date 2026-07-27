@@ -38,27 +38,24 @@ export default function TimetableGridMobile({ rows, filterType }: Props) {
                 <td key={day.day_code} rowSpan={cell.span} className="slot-cell">
                   {cell.items.map((item, ii) => (
                     <div key={ii} className="slot-item">
-                      {filterType === 'lab' ? (
+                      <div className="slot-code">{item.shortcode || item.coursecode}</div>
+                      {filterType === 'class' && item.labname && (
+                        <div className="slot-room">{item.labname}</div>
+                      )}
+                      {filterType === 'lecturer' && (
                         <>
-                          <div className="slot-code">{item.classcode}</div>
+                          {item.labname && <div className="slot-room">{item.labname}</div>}
+                          <div className="slot-room">{item.classcode}</div>
+                        </>
+                      )}
+                      {filterType === 'lab' && (
+                        <>
                           <div className="slot-room">
                             {item.lecturers.map((l, li) => (
                               <span key={li}>{li > 0 ? ', ' : ''}{l.code}</span>
                             ))}
                           </div>
-                        </>
-                      ) : (
-                        <>
-                          <div className="slot-code">{item.shortcode || item.coursecode}</div>
-                          {filterType === 'class' && item.labname && (
-                            <div className="slot-room">{item.labname}</div>
-                          )}
-                          {filterType === 'lecturer' && (
-                            <>
-                              {item.labname && <div className="slot-room">{item.labname}</div>}
-                              <div className="slot-room">{item.classcode}</div>
-                            </>
-                          )}
+                          <div className="slot-room">{item.classcode}</div>
                         </>
                       )}
                     </div>
