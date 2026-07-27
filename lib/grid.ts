@@ -47,6 +47,9 @@ export function buildGrid(entries: TimetableEntry[], courses: Record<string, Cou
         const last = merged[merged.length - 1];
         if (last && last.coursecode === item.coursecode && last.labname === item.labname) {
           mergeLecturers(last, item);
+          // Collect classcodes when merging same course+lab
+          if (!last.classcodes) last.classcodes = [last.classcode];
+          if (!last.classcodes.includes(item.classcode)) last.classcodes.push(item.classcode);
         } else {
           const coursename = courses[item.coursecode]?.coursename || '';
           merged.push({ ...item, coursename, shortcode: shortCode(coursename) || item.coursecode });

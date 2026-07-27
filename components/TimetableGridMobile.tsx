@@ -45,17 +45,27 @@ export default function TimetableGridMobile({ rows, filterType }: Props) {
                       {filterType === 'lecturer' && (
                         <>
                           {item.labname && <div className="slot-room">{item.labname}</div>}
-                          <div className="slot-room">{item.classcode}</div>
+                          <div className="slot-room">
+                            {!item.classcodes || item.classcodes.length <= 5
+                              ? (item.classcodes ? item.classcodes.join(', ') : item.classcode)
+                              : `${item.classcodes[0]} +${item.classcodes.length - 1}`}
+                          </div>
                         </>
                       )}
                       {filterType === 'lab' && (
                         <>
                           <div className="slot-room">
-                            {item.lecturers.map((l, li) => (
-                              <span key={li}>{li > 0 ? ', ' : ''}{l.code}</span>
-                            ))}
+                            {item.lecturers.length <= 5
+                              ? item.lecturers.map((l, li) => (
+                                  <span key={li}>{li > 0 ? ', ' : ''}{l.code}</span>
+                                ))
+                              : `${item.lecturers[0]?.code || ''} +${item.lecturers.length - 1}`}
                           </div>
-                          <div className="slot-room">{item.classcode}</div>
+                          <div className="slot-room">
+                            {!item.classcodes || item.classcodes.length <= 5
+                              ? (item.classcodes ? item.classcodes.join(', ') : item.classcode)
+                              : `${item.classcodes[0]} +${item.classcodes.length - 1}`}
+                          </div>
                         </>
                       )}
                     </div>

@@ -17,6 +17,7 @@ export interface TimetableEntry {
   lecturers: Lecturer[];
   coursename?: string;
   shortcode?: string;
+  classcodes?: string[];  // Multiple classes when merged (same course+lab)
 }
 
 export interface Lecturer {
