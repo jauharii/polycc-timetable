@@ -2,6 +2,9 @@
 
 Next.js static export timetable viewer for Malaysian Polytechnics and Community Colleges (Politeknik & Kolej Komuniti).
 
+## Link
+https://jauharii.github.io/polycc-timetable/
+
 ## Features
 
 - **50 agencies** — All Malaysian polytechnics and community colleges
@@ -45,9 +48,6 @@ The workflow splits 50 agencies into 20 parallel jobs:
 1. Push to `main` branch
 2. GitHub Actions runs weekly (Sunday 19:00 UTC = Monday 03:00 GMT+8)
 3. Or trigger manually: **Actions → Deploy to GitHub Pages → Run workflow**
-
-Site URL:
-https://jauharii.github.io/polycc-timetable/
 
 ### Environment Variables
 
