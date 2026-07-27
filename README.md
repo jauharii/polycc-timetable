@@ -46,7 +46,8 @@ The workflow splits 50 agencies into 20 parallel jobs:
 2. GitHub Actions runs weekly (Sunday 19:00 UTC = Monday 03:00 GMT+8)
 3. Or trigger manually: **Actions → Deploy to GitHub Pages → Run workflow**
 
-Site URL: `https://jauharii.github.io/polycc-timetable/`
+Site URL:
+https://jauharii.github.io/polycc-timetable/
 
 ### Environment Variables
 
