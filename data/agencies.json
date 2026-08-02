@@ -1,0 +1,1484 @@
+[
+  {
+    "agencyid": "1",
+    "agencyname": "POLITEKNIK SEBERANG PERAI",
+    "sessions": [
+      {
+        "sessioncode": "20202",
+        "session_name": "2 : 2019/2020"
+      },
+      {
+        "sessioncode": "20211",
+        "session_name": "1 : 2021/2022"
+      },
+      {
+        "sessioncode": "20212",
+        "session_name": "2 : 2020/2021"
+      },
+      {
+        "sessioncode": "2022",
+        "session_name": "2022"
+      },
+      {
+        "sessioncode": "20231",
+        "session_name": "1 : 2023/2024"
+      },
+      {
+        "sessioncode": "20232",
+        "session_name": "2 : 2022/2023"
+      },
+      {
+        "sessioncode": "20241",
+        "session_name": "2 : 2024/2025"
+      },
+      {
+        "sessioncode": "20242",
+        "session_name": "2 : 2023/2024"
+      },
+      {
+        "sessioncode": "20251",
+        "session_name": "1 : 2025/2026"
+      },
+      {
+        "sessioncode": "20252",
+        "session_name": "2 : 2024/2025"
+      },
+      {
+        "sessioncode": "20261",
+        "session_name": "1: 2026/2027"
+      },
+      {
+        "sessioncode": "20262",
+        "session_name": "2 : 2025/2026"
+      },
+      {
+        "sessioncode": "20271",
+        "session_name": "1 : 2027/2028"
+      }
+    ]
+  },
+  {
+    "agencyid": "10",
+    "agencyname": "POLITEKNIK MERSING",
+    "sessions": [
+      {
+        "sessioncode": "20221",
+        "session_name": "1 : 2022/2023"
+      }
+    ]
+  },
+  {
+    "agencyid": "11",
+    "agencyname": "KOLEJ KOMUNITI JEMPOL",
+    "sessions": [
+      {
+        "sessioncode": "20221",
+        "session_name": "1 : 2022/2023"
+      },
+      {
+        "sessioncode": "20222",
+        "session_name": "2 : 2021/2022"
+      },
+      {
+        "sessioncode": "20231",
+        "session_name": "1 : 2023/2024"
+      },
+      {
+        "sessioncode": "20232",
+        "session_name": "2 : 2022/2023"
+      },
+      {
+        "sessioncode": "20241",
+        "session_name": "2 : 2024/2025"
+      },
+      {
+        "sessioncode": "20242",
+        "session_name": "2 : 2023/2024"
+      },
+      {
+        "sessioncode": "20251",
+        "session_name": "1 : 2025/2026"
+      },
+      {
+        "sessioncode": "20252",
+        "session_name": "2 : 2024/2025"
+      },
+      {
+        "sessioncode": "20261",
+        "session_name": "1: 2026/2027"
+      },
+      {
+        "sessioncode": "20262",
+        "session_name": "2 : 2025/2026"
+      }
+    ]
+  },
+  {
+    "agencyid": "12",
+    "agencyname": "KOLEJ KOMUNITI SEGAMAT 2",
+    "sessions": [
+      {
+        "sessioncode": "20211",
+        "session_name": "1 : 2021/2022"
+      },
+      {
+        "sessioncode": "20221",
+        "session_name": "1 : 2022/2023"
+      },
+      {
+        "sessioncode": "20222",
+        "session_name": "2 : 2021/2022"
+      },
+      {
+        "sessioncode": "20231",
+        "session_name": "1 : 2023/2024"
+      },
+      {
+        "sessioncode": "20241",
+        "session_name": "2 : 2024/2025"
+      },
+      {
+        "sessioncode": "20242",
+        "session_name": "2 : 2023/2024"
+      },
+      {
+        "sessioncode": "20251",
+        "session_name": "1 : 2025/2026"
+      },
+      {
+        "sessioncode": "20252",
+        "session_name": "2 : 2024/2025"
+      },
+      {
+        "sessioncode": "20262",
+        "session_name": "2 : 2025/2026"
+      },
+      {
+        "sessioncode": "22223",
+        "session_name": "SEM PENDEK 2222"
+      },
+      {
+        "sessioncode": "22526",
+        "session_name": "22526"
+      }
+    ]
+  },
+  {
+    "agencyid": "13",
+    "agencyname": "POLITEKNIK PORT DICKSON",
+    "sessions": [
+      {
+        "sessioncode": "20232",
+        "session_name": "2 : 2022/2023"
+      }
+    ]
+  },
+  {
+    "agencyid": "14",
+    "agencyname": "POLITEKNIK IBRAHIM SULTAN",
+    "sessions": [
+      {
+        "sessioncode": "20221",
+        "session_name": "1 : 2022/2023"
+      },
+      {
+        "sessioncode": "20222",
+        "session_name": "2 : 2021/2022"
+      },
+      {
+        "sessioncode": "20231",
+        "session_name": "1 : 2023/2024"
+      },
+      {
+        "sessioncode": "20232",
+        "session_name": "2 : 2022/2023"
+      },
+      {
+        "sessioncode": "202324",
+        "session_name": "202324"
+      },
+      {
+        "sessioncode": "20233",
+        "session_name": "SEM PENDEK 2023"
+      },
+      {
+        "sessioncode": "20235",
+        "session_name": "20235"
+      },
+      {
+        "sessioncode": "20241",
+        "session_name": "2 : 2024/2025"
+      },
+      {
+        "sessioncode": "20242",
+        "session_name": "2 : 2023/2024"
+      },
+      {
+        "sessioncode": "20243",
+        "session_name": "SEM PENDEK 2024"
+      },
+      {
+        "sessioncode": "20245",
+        "session_name": "20245"
+      },
+      {
+        "sessioncode": "20246",
+        "session_name": "20246"
+      },
+      {
+        "sessioncode": "20251",
+        "session_name": "1 : 2025/2026"
+      },
+      {
+        "sessioncode": "202511",
+        "session_name": "202511"
+      },
+      {
+        "sessioncode": "202512",
+        "session_name": "202512"
+      },
+      {
+        "sessioncode": "202521",
+        "session_name": "202521"
+      },
+      {
+        "sessioncode": "202522",
+        "session_name": "202522"
+      },
+      {
+        "sessioncode": "20253",
+        "session_name": "SEM PENDEK 2025"
+      },
+      {
+        "sessioncode": "202621",
+        "session_name": "202621"
+      },
+      {
+        "sessioncode": "202622",
+        "session_name": "202622"
+      },
+      {
+        "sessioncode": "202623",
+        "session_name": "202623"
+      },
+      {
+        "sessioncode": "20263",
+        "session_name": "SEM PENDEK 2026"
+      },
+      {
+        "sessioncode": "20264",
+        "session_name": "20264"
+      },
+      {
+        "sessioncode": "202711",
+        "session_name": "202711"
+      },
+      {
+        "sessioncode": "202712",
+        "session_name": "202712"
+      }
+    ]
+  },
+  {
+    "agencyid": "15",
+    "agencyname": "POLITEKNIK METRO JOHOR BAHRU",
+    "sessions": [
+      {
+        "sessioncode": "20221",
+        "session_name": "1 : 2022/2023"
+      },
+      {
+        "sessioncode": "20223",
+        "session_name": "SEM PENDEK 2022"
+      },
+      {
+        "sessioncode": "20231",
+        "session_name": "1 : 2023/2024"
+      },
+      {
+        "sessioncode": "20232",
+        "session_name": "2 : 2022/2023"
+      },
+      {
+        "sessioncode": "20233",
+        "session_name": "SEM PENDEK 2023"
+      },
+      {
+        "sessioncode": "20235",
+        "session_name": "20235"
+      },
+      {
+        "sessioncode": "20242",
+        "session_name": "2 : 2023/2024"
+      },
+      {
+        "sessioncode": "20252",
+        "session_name": "2 : 2024/2025"
+      },
+      {
+        "sessioncode": "202526",
+        "session_name": "202526"
+      },
+      {
+        "sessioncode": "20253",
+        "session_name": "SEM PENDEK 2025"
+      },
+      {
+        "sessioncode": "20261",
+        "session_name": "1: 2026/2027"
+      },
+      {
+        "sessioncode": "20262",
+        "session_name": "2 : 2025/2026"
+      },
+      {
+        "sessioncode": "20263",
+        "session_name": "SEM PENDEK 2026"
+      }
+    ]
+  },
+  {
+    "agencyid": "16",
+    "agencyname": "POLITEKNIK TUN SYED NASIR SYED ISMAIL",
+    "sessions": []
+  },
+  {
+    "agencyid": "17",
+    "agencyname": "POLITEKNIK BALIK PULAU",
+    "sessions": [
+      {
+        "sessioncode": "20241",
+        "session_name": "2 : 2024/2025"
+      },
+      {
+        "sessioncode": "20251",
+        "session_name": "1 : 2025/2026"
+      },
+      {
+        "sessioncode": "20261",
+        "session_name": "1: 2026/2027"
+      },
+      {
+        "sessioncode": "20262",
+        "session_name": "2 : 2025/2026"
+      },
+      {
+        "sessioncode": "20263",
+        "session_name": "SEM PENDEK 2026"
+      }
+    ]
+  },
+  {
+    "agencyid": "18",
+    "agencyname": "POLITEKNIK METRO TASIK GELUGOR",
+    "sessions": [
+      {
+        "sessioncode": "20221",
+        "session_name": "1 : 2022/2023"
+      },
+      {
+        "sessioncode": "20241",
+        "session_name": "2 : 2024/2025"
+      },
+      {
+        "sessioncode": "20251",
+        "session_name": "1 : 2025/2026"
+      },
+      {
+        "sessioncode": "20252",
+        "session_name": "2 : 2024/2025"
+      },
+      {
+        "sessioncode": "20261",
+        "session_name": "1: 2026/2027"
+      },
+      {
+        "sessioncode": "20262",
+        "session_name": "2 : 2025/2026"
+      },
+      {
+        "sessioncode": "20263",
+        "session_name": "SEM PENDEK 2026"
+      }
+    ]
+  },
+  {
+    "agencyid": "19",
+    "agencyname": "POLITEKNIK SULTAN HAJI AHMAD SHAH",
+    "sessions": [
+      {
+        "sessioncode": "20222",
+        "session_name": "2 : 2021/2022"
+      },
+      {
+        "sessioncode": "20231",
+        "session_name": "1 : 2023/2024"
+      },
+      {
+        "sessioncode": "20232",
+        "session_name": "2 : 2022/2023"
+      },
+      {
+        "sessioncode": "20233",
+        "session_name": "SEM PENDEK 2023"
+      },
+      {
+        "sessioncode": "202402",
+        "session_name": "202402"
+      },
+      {
+        "sessioncode": "20241",
+        "session_name": "2 : 2024/2025"
+      },
+      {
+        "sessioncode": "20242",
+        "session_name": "2 : 2023/2024"
+      },
+      {
+        "sessioncode": "202501",
+        "session_name": "202501"
+      },
+      {
+        "sessioncode": "20251",
+        "session_name": "1 : 2025/2026"
+      },
+      {
+        "sessioncode": "20252",
+        "session_name": "2 : 2024/2025"
+      },
+      {
+        "sessioncode": "20261",
+        "session_name": "1: 2026/2027"
+      },
+      {
+        "sessioncode": "20262",
+        "session_name": "2 : 2025/2026"
+      },
+      {
+        "sessioncode": "20263",
+        "session_name": "SEM PENDEK 2026"
+      },
+      {
+        "sessioncode": "20271",
+        "session_name": "1 : 2027/2028"
+      }
+    ]
+  },
+  {
+    "agencyid": "2",
+    "agencyname": "POLITEKNIK TUANKU SULTANAH BAHIYAH",
+    "sessions": [
+      {
+        "sessioncode": "20261",
+        "session_name": "1: 2026/2027"
+      },
+      {
+        "sessioncode": "20262",
+        "session_name": "2 : 2025/2026"
+      },
+      {
+        "sessioncode": "20263",
+        "session_name": "SEM PENDEK 2026"
+      }
+    ]
+  },
+  {
+    "agencyid": "20",
+    "agencyname": "POLITEKNIK KOTA BHARU",
+    "sessions": []
+  },
+  {
+    "agencyid": "21",
+    "agencyname": "POLITEKNIK KUALA TERENGGANU",
+    "sessions": []
+  },
+  {
+    "agencyid": "22",
+    "agencyname": "POLITEKNIK SULTAN MIZAN ZAINAL ABIDIN",
+    "sessions": []
+  },
+  {
+    "agencyid": "23",
+    "agencyname": "POLITEKNIK MUADZAM SHAH",
+    "sessions": []
+  },
+  {
+    "agencyid": "24",
+    "agencyname": "POLITEKNIK JELI KELANTAN",
+    "sessions": []
+  },
+  {
+    "agencyid": "25",
+    "agencyname": "POLITEKNIK METRO KUANTAN",
+    "sessions": [
+      {
+        "sessioncode": "20221",
+        "session_name": "1 : 2022/2023"
+      },
+      {
+        "sessioncode": "20222",
+        "session_name": "2 : 2021/2022"
+      }
+    ]
+  },
+  {
+    "agencyid": "26",
+    "agencyname": "POLITEKNIK HULU TERENGGANU",
+    "sessions": [
+      {
+        "sessioncode": "20221",
+        "session_name": "1 : 2022/2023"
+      },
+      {
+        "sessioncode": "20231",
+        "session_name": "1 : 2023/2024"
+      },
+      {
+        "sessioncode": "20241",
+        "session_name": "2 : 2024/2025"
+      },
+      {
+        "sessioncode": "202411",
+        "session_name": "202411"
+      },
+      {
+        "sessioncode": "20242",
+        "session_name": "2 : 2023/2024"
+      },
+      {
+        "sessioncode": "20251",
+        "session_name": "1 : 2025/2026"
+      },
+      {
+        "sessioncode": "20252",
+        "session_name": "2 : 2024/2025"
+      },
+      {
+        "sessioncode": "20262",
+        "session_name": "2 : 2025/2026"
+      },
+      {
+        "sessioncode": "202622",
+        "session_name": "202622"
+      }
+    ]
+  },
+  {
+    "agencyid": "27",
+    "agencyname": "POLITEKNIK BESUT TERENGGANU",
+    "sessions": [
+      {
+        "sessioncode": "20221",
+        "session_name": "1 : 2022/2023"
+      }
+    ]
+  },
+  {
+    "agencyid": "28",
+    "agencyname": "POLITEKNIK KUCHING",
+    "sessions": [
+      {
+        "sessioncode": "20221",
+        "session_name": "1 : 2022/2023"
+      }
+    ]
+  },
+  {
+    "agencyid": "29",
+    "agencyname": "POLITEKNIK MUKAH SARAWAK",
+    "sessions": [
+      {
+        "sessioncode": "20222",
+        "session_name": "2 : 2021/2022"
+      }
+    ]
+  },
+  {
+    "agencyid": "3",
+    "agencyname": "POLITEKNIK TUANKU SYED SIRAJUDDIN",
+    "sessions": [
+      {
+        "sessioncode": "20211",
+        "session_name": "1 : 2021/2022"
+      },
+      {
+        "sessioncode": "20221",
+        "session_name": "1 : 2022/2023"
+      },
+      {
+        "sessioncode": "20222",
+        "session_name": "2 : 2021/2022"
+      },
+      {
+        "sessioncode": "20231",
+        "session_name": "1 : 2023/2024"
+      },
+      {
+        "sessioncode": "20232",
+        "session_name": "2 : 2022/2023"
+      },
+      {
+        "sessioncode": "20241",
+        "session_name": "2 : 2024/2025"
+      },
+      {
+        "sessioncode": "20242",
+        "session_name": "2 : 2023/2024"
+      },
+      {
+        "sessioncode": "20251",
+        "session_name": "1 : 2025/2026"
+      },
+      {
+        "sessioncode": "20252",
+        "session_name": "2 : 2024/2025"
+      },
+      {
+        "sessioncode": "20253",
+        "session_name": "SEM PENDEK 2025"
+      },
+      {
+        "sessioncode": "20261",
+        "session_name": "1: 2026/2027"
+      }
+    ]
+  },
+  {
+    "agencyid": "30",
+    "agencyname": "POLITEKNIK SANDAKAN SABAH",
+    "sessions": [
+      {
+        "sessioncode": "12526",
+        "session_name": "12526"
+      },
+      {
+        "sessioncode": "20221",
+        "session_name": "1 : 2022/2023"
+      },
+      {
+        "sessioncode": "20222",
+        "session_name": "2 : 2021/2022"
+      },
+      {
+        "sessioncode": "20231",
+        "session_name": "1 : 2023/2024"
+      },
+      {
+        "sessioncode": "20232",
+        "session_name": "2 : 2022/2023"
+      },
+      {
+        "sessioncode": "20241",
+        "session_name": "2 : 2024/2025"
+      },
+      {
+        "sessioncode": "20252",
+        "session_name": "2 : 2024/2025"
+      },
+      {
+        "sessioncode": "20261",
+        "session_name": "1: 2026/2027"
+      },
+      {
+        "sessioncode": "20262",
+        "session_name": "2 : 2025/2026"
+      }
+    ]
+  },
+  {
+    "agencyid": "31",
+    "agencyname": "POLITEKNIK METRO BETONG SARAWAK",
+    "sessions": [
+      {
+        "sessioncode": "20221",
+        "session_name": "1 : 2022/2023"
+      },
+      {
+        "sessioncode": "20231",
+        "session_name": "1 : 2023/2024"
+      },
+      {
+        "sessioncode": "20232",
+        "session_name": "2 : 2022/2023"
+      },
+      {
+        "sessioncode": "20242",
+        "session_name": "2 : 2023/2024"
+      },
+      {
+        "sessioncode": "20251",
+        "session_name": "1 : 2025/2026"
+      },
+      {
+        "sessioncode": "20252",
+        "session_name": "2 : 2024/2025"
+      },
+      {
+        "sessioncode": "20261",
+        "session_name": "1: 2026/2027"
+      },
+      {
+        "sessioncode": "20262",
+        "session_name": "2 : 2025/2026"
+      }
+    ]
+  },
+  {
+    "agencyid": "32",
+    "agencyname": "POLITEKNIK KOTA KINABALU",
+    "sessions": []
+  },
+  {
+    "agencyid": "33",
+    "agencyname": "POLITEKNIK TAWAU SABAH",
+    "sessions": [
+      {
+        "sessioncode": "20221",
+        "session_name": "1 : 2022/2023"
+      },
+      {
+        "sessioncode": "20222",
+        "session_name": "2 : 2021/2022"
+      },
+      {
+        "sessioncode": "20231",
+        "session_name": "1 : 2023/2024"
+      },
+      {
+        "sessioncode": "20241",
+        "session_name": "2 : 2024/2025"
+      },
+      {
+        "sessioncode": "20242",
+        "session_name": "2 : 2023/2024"
+      },
+      {
+        "sessioncode": "20251",
+        "session_name": "1 : 2025/2026"
+      },
+      {
+        "sessioncode": "20252",
+        "session_name": "2 : 2024/2025"
+      },
+      {
+        "sessioncode": "20261",
+        "session_name": "1: 2026/2027"
+      },
+      {
+        "sessioncode": "20262",
+        "session_name": "2 : 2025/2026"
+      }
+    ]
+  },
+  {
+    "agencyid": "34",
+    "agencyname": "POLITEKNIK SULTAN SALAHUDDIN ABDUL AZIZ SHAH",
+    "sessions": [
+      {
+        "sessioncode": "12526",
+        "session_name": "12526"
+      },
+      {
+        "sessioncode": "12627",
+        "session_name": "12627"
+      },
+      {
+        "sessioncode": "20221",
+        "session_name": "1 : 2022/2023"
+      },
+      {
+        "sessioncode": "20223",
+        "session_name": "SEM PENDEK 2022"
+      },
+      {
+        "sessioncode": "20231",
+        "session_name": "1 : 2023/2024"
+      },
+      {
+        "sessioncode": "20232",
+        "session_name": "2 : 2022/2023"
+      },
+      {
+        "sessioncode": "20233",
+        "session_name": "SEM PENDEK 2023"
+      },
+      {
+        "sessioncode": "20234",
+        "session_name": "20234"
+      },
+      {
+        "sessioncode": "20235",
+        "session_name": "20235"
+      },
+      {
+        "sessioncode": "20241",
+        "session_name": "2 : 2024/2025"
+      },
+      {
+        "sessioncode": "20242",
+        "session_name": "2 : 2023/2024"
+      },
+      {
+        "sessioncode": "20243",
+        "session_name": "SEM PENDEK 2024"
+      },
+      {
+        "sessioncode": "20245",
+        "session_name": "20245"
+      },
+      {
+        "sessioncode": "20251",
+        "session_name": "1 : 2025/2026"
+      },
+      {
+        "sessioncode": "20252",
+        "session_name": "2 : 2024/2025"
+      },
+      {
+        "sessioncode": "20253",
+        "session_name": "SEM PENDEK 2025"
+      },
+      {
+        "sessioncode": "20254",
+        "session_name": "20254"
+      },
+      {
+        "sessioncode": "20255",
+        "session_name": "20255"
+      },
+      {
+        "sessioncode": "20261",
+        "session_name": "1: 2026/2027"
+      },
+      {
+        "sessioncode": "20262",
+        "session_name": "2 : 2025/2026"
+      },
+      {
+        "sessioncode": "20263",
+        "session_name": "SEM PENDEK 2026"
+      },
+      {
+        "sessioncode": "22526",
+        "session_name": "22526"
+      },
+      {
+        "sessioncode": "2425",
+        "session_name": "2425"
+      },
+      {
+        "sessioncode": "24252",
+        "session_name": "2 : 2424/2425"
+      }
+    ]
+  },
+  {
+    "agencyid": "35",
+    "agencyname": "POLITEKNIK SULTAN IDRIS SHAH",
+    "sessions": [
+      {
+        "sessioncode": "20222",
+        "session_name": "2 : 2021/2022"
+      },
+      {
+        "sessioncode": "20251",
+        "session_name": "1 : 2025/2026"
+      },
+      {
+        "sessioncode": "20252",
+        "session_name": "2 : 2024/2025"
+      },
+      {
+        "sessioncode": "20253",
+        "session_name": "SEM PENDEK 2025"
+      },
+      {
+        "sessioncode": "20254",
+        "session_name": "20254"
+      },
+      {
+        "sessioncode": "20262",
+        "session_name": "2 : 2025/2026"
+      },
+      {
+        "sessioncode": "20263",
+        "session_name": "SEM PENDEK 2026"
+      },
+      {
+        "sessioncode": "20264",
+        "session_name": "20264"
+      }
+    ]
+  },
+  {
+    "agencyid": "36",
+    "agencyname": "POLITEKNIK BANTING SELANGOR",
+    "sessions": [
+      {
+        "sessioncode": "20231",
+        "session_name": "1 : 2023/2024"
+      },
+      {
+        "sessioncode": "20232",
+        "session_name": "2 : 2022/2023"
+      },
+      {
+        "sessioncode": "20241",
+        "session_name": "2 : 2024/2025"
+      },
+      {
+        "sessioncode": "20242",
+        "session_name": "2 : 2023/2024"
+      },
+      {
+        "sessioncode": "20251",
+        "session_name": "1 : 2025/2026"
+      },
+      {
+        "sessioncode": "20252",
+        "session_name": "2 : 2024/2025"
+      },
+      {
+        "sessioncode": "20253",
+        "session_name": "SEM PENDEK 2025"
+      },
+      {
+        "sessioncode": "20261",
+        "session_name": "1: 2026/2027"
+      },
+      {
+        "sessioncode": "20262",
+        "session_name": "2 : 2025/2026"
+      },
+      {
+        "sessioncode": "20271",
+        "session_name": "1 : 2027/2028"
+      }
+    ]
+  },
+  {
+    "agencyid": "37",
+    "agencyname": "POLITEKNIK METRO KUALA LUMPUR",
+    "sessions": []
+  },
+  {
+    "agencyid": "38",
+    "agencyname": "POLITEKNIK MARITIM SULTAN NAZRIN SHAH",
+    "sessions": [
+      {
+        "sessioncode": "20221",
+        "session_name": "1 : 2022/2023"
+      },
+      {
+        "sessioncode": "20231",
+        "session_name": "1 : 2023/2024"
+      },
+      {
+        "sessioncode": "20232",
+        "session_name": "2 : 2022/2023"
+      },
+      {
+        "sessioncode": "20241",
+        "session_name": "2 : 2024/2025"
+      },
+      {
+        "sessioncode": "20242",
+        "session_name": "2 : 2023/2024"
+      },
+      {
+        "sessioncode": "20251",
+        "session_name": "1 : 2025/2026"
+      },
+      {
+        "sessioncode": "20252",
+        "session_name": "2 : 2024/2025"
+      },
+      {
+        "sessioncode": "20261",
+        "session_name": "1: 2026/2027"
+      },
+      {
+        "sessioncode": "20263",
+        "session_name": "SEM PENDEK 2026"
+      },
+      {
+        "sessioncode": "20264",
+        "session_name": "20264"
+      }
+    ]
+  },
+  {
+    "agencyid": "39",
+    "agencyname": "KOLEJ KOMUNITI BETONG",
+    "sessions": []
+  },
+  {
+    "agencyid": "4",
+    "agencyname": "POLITEKNIK SULTAN ABDUL HALIM MU'ADZAM SHAH",
+    "sessions": [
+      {
+        "sessioncode": "20221",
+        "session_name": "1 : 2022/2023"
+      },
+      {
+        "sessioncode": "20252",
+        "session_name": "2 : 2024/2025"
+      }
+    ]
+  },
+  {
+    "agencyid": "40",
+    "agencyname": "KOLEJ KOMUNITI SARIKEI",
+    "sessions": [
+      {
+        "sessioncode": "20241",
+        "session_name": "2 : 2024/2025"
+      },
+      {
+        "sessioncode": "20242",
+        "session_name": "2 : 2023/2024"
+      }
+    ]
+  },
+  {
+    "agencyid": "41",
+    "agencyname": "KOLEJ KOMUNITI SARIKEI CAWANGAN SIBU",
+    "sessions": []
+  },
+  {
+    "agencyid": "42",
+    "agencyname": "KOLEJ KOMUNITI SABAK BERNAM",
+    "sessions": [
+      {
+        "sessioncode": "12027",
+        "session_name": "12027"
+      },
+      {
+        "sessioncode": "12526",
+        "session_name": "12526"
+      },
+      {
+        "sessioncode": "20241",
+        "session_name": "2 : 2024/2025"
+      },
+      {
+        "sessioncode": "20251",
+        "session_name": "1 : 2025/2026"
+      },
+      {
+        "sessioncode": "20252",
+        "session_name": "2 : 2024/2025"
+      },
+      {
+        "sessioncode": "20253",
+        "session_name": "SEM PENDEK 2025"
+      },
+      {
+        "sessioncode": "20261",
+        "session_name": "1: 2026/2027"
+      },
+      {
+        "sessioncode": "20262",
+        "session_name": "2 : 2025/2026"
+      },
+      {
+        "sessioncode": "22526",
+        "session_name": "22526"
+      }
+    ]
+  },
+  {
+    "agencyid": "43",
+    "agencyname": "KOLEJ KOMUNITI SEGAMAT",
+    "sessions": [
+      {
+        "sessioncode": "20251",
+        "session_name": "1 : 2025/2026"
+      },
+      {
+        "sessioncode": "20252",
+        "session_name": "2 : 2024/2025"
+      }
+    ]
+  },
+  {
+    "agencyid": "44",
+    "agencyname": "KOLEJ KOMUNITI KEPALA BATAS",
+    "sessions": []
+  },
+  {
+    "agencyid": "45",
+    "agencyname": "KOLEJ KOMUNITI TAIPING",
+    "sessions": [
+      {
+        "sessioncode": "20251",
+        "session_name": "1 : 2025/2026"
+      }
+    ]
+  },
+  {
+    "agencyid": "46",
+    "agencyname": "KOLEJ KOMUNITI KUALA LANGAT",
+    "sessions": []
+  },
+  {
+    "agencyid": "47",
+    "agencyname": "KOLEJ KOMUNITI PEKAN",
+    "sessions": [
+      {
+        "sessioncode": "20262",
+        "session_name": "2 : 2025/2026"
+      }
+    ]
+  },
+  {
+    "agencyid": "48",
+    "agencyname": "KOLEJ KOMUNITI ROMPIN",
+    "sessions": []
+  },
+  {
+    "agencyid": "49",
+    "agencyname": "KOLEJ KOMUNITI KLANG",
+    "sessions": [
+      {
+        "sessioncode": "20261",
+        "session_name": "1: 2026/2027"
+      },
+      {
+        "sessioncode": "20262",
+        "session_name": "2 : 2025/2026"
+      }
+    ]
+  },
+  {
+    "agencyid": "5",
+    "agencyname": "POLITEKNIK UNGKU OMAR",
+    "sessions": [
+      {
+        "sessioncode": "20212",
+        "session_name": "2 : 2020/2021"
+      },
+      {
+        "sessioncode": "20221",
+        "session_name": "1 : 2022/2023"
+      },
+      {
+        "sessioncode": "20222",
+        "session_name": "2 : 2021/2022"
+      },
+      {
+        "sessioncode": "20223",
+        "session_name": "SEM PENDEK 2022"
+      },
+      {
+        "sessioncode": "20224",
+        "session_name": "20224"
+      },
+      {
+        "sessioncode": "20225",
+        "session_name": "20225"
+      },
+      {
+        "sessioncode": "20226",
+        "session_name": "20226"
+      },
+      {
+        "sessioncode": "20227",
+        "session_name": "20227"
+      },
+      {
+        "sessioncode": "20231",
+        "session_name": "1 : 2023/2024"
+      },
+      {
+        "sessioncode": "20232",
+        "session_name": "2 : 2022/2023"
+      },
+      {
+        "sessioncode": "20233",
+        "session_name": "SEM PENDEK 2023"
+      },
+      {
+        "sessioncode": "20234",
+        "session_name": "20234"
+      },
+      {
+        "sessioncode": "20235",
+        "session_name": "20235"
+      },
+      {
+        "sessioncode": "20236",
+        "session_name": "20236"
+      },
+      {
+        "sessioncode": "20241",
+        "session_name": "2 : 2024/2025"
+      },
+      {
+        "sessioncode": "20242",
+        "session_name": "2 : 2023/2024"
+      },
+      {
+        "sessioncode": "20243",
+        "session_name": "SEM PENDEK 2024"
+      },
+      {
+        "sessioncode": "20244",
+        "session_name": "20244"
+      },
+      {
+        "sessioncode": "20245",
+        "session_name": "20245"
+      },
+      {
+        "sessioncode": "20246",
+        "session_name": "20246"
+      },
+      {
+        "sessioncode": "20247",
+        "session_name": "20247"
+      },
+      {
+        "sessioncode": "20248",
+        "session_name": "20248"
+      },
+      {
+        "sessioncode": "20249",
+        "session_name": "20249"
+      },
+      {
+        "sessioncode": "20250",
+        "session_name": "20250"
+      },
+      {
+        "sessioncode": "20251",
+        "session_name": "1 : 2025/2026"
+      },
+      {
+        "sessioncode": "20252",
+        "session_name": "2 : 2024/2025"
+      },
+      {
+        "sessioncode": "20253",
+        "session_name": "SEM PENDEK 2025"
+      },
+      {
+        "sessioncode": "20254",
+        "session_name": "20254"
+      }
+    ]
+  },
+  {
+    "agencyid": "50",
+    "agencyname": "KOLEJ KOMUNITI TEMERLOH",
+    "sessions": []
+  },
+  {
+    "agencyid": "6",
+    "agencyname": "POLITEKNIK SULTAN AZLAN SHAH",
+    "sessions": [
+      {
+        "sessioncode": "20211",
+        "session_name": "1 : 2021/2022"
+      },
+      {
+        "sessioncode": "20221",
+        "session_name": "1 : 2022/2023"
+      },
+      {
+        "sessioncode": "20223",
+        "session_name": "SEM PENDEK 2022"
+      },
+      {
+        "sessioncode": "20231",
+        "session_name": "1 : 2023/2024"
+      },
+      {
+        "sessioncode": "20232",
+        "session_name": "2 : 2022/2023"
+      },
+      {
+        "sessioncode": "20233",
+        "session_name": "SEM PENDEK 2023"
+      },
+      {
+        "sessioncode": "20241",
+        "session_name": "2 : 2024/2025"
+      },
+      {
+        "sessioncode": "20242",
+        "session_name": "2 : 2023/2024"
+      },
+      {
+        "sessioncode": "20252",
+        "session_name": "2 : 2024/2025"
+      },
+      {
+        "sessioncode": "20253",
+        "session_name": "SEM PENDEK 2025"
+      },
+      {
+        "sessioncode": "20254",
+        "session_name": "20254"
+      },
+      {
+        "sessioncode": "20262",
+        "session_name": "2 : 2025/2026"
+      },
+      {
+        "sessioncode": "20263",
+        "session_name": "SEM PENDEK 2026"
+      }
+    ]
+  },
+  {
+    "agencyid": "7",
+    "agencyname": "POLITEKNIK MELAKA",
+    "sessions": [
+      {
+        "sessioncode": "20211",
+        "session_name": "1 : 2021/2022"
+      },
+      {
+        "sessioncode": "20213",
+        "session_name": "SEM PENDEK 2021"
+      },
+      {
+        "sessioncode": "20221",
+        "session_name": "1 : 2022/2023"
+      },
+      {
+        "sessioncode": "20231",
+        "session_name": "1 : 2023/2024"
+      },
+      {
+        "sessioncode": "20232",
+        "session_name": "2 : 2022/2023"
+      },
+      {
+        "sessioncode": "20233",
+        "session_name": "SEM PENDEK 2023"
+      },
+      {
+        "sessioncode": "20241",
+        "session_name": "2 : 2024/2025"
+      },
+      {
+        "sessioncode": "20242",
+        "session_name": "2 : 2023/2024"
+      },
+      {
+        "sessioncode": "20243",
+        "session_name": "SEM PENDEK 2024"
+      },
+      {
+        "sessioncode": "20251",
+        "session_name": "1 : 2025/2026"
+      },
+      {
+        "sessioncode": "20252",
+        "session_name": "2 : 2024/2025"
+      },
+      {
+        "sessioncode": "20253",
+        "session_name": "SEM PENDEK 2025"
+      },
+      {
+        "sessioncode": "20254",
+        "session_name": "20254"
+      },
+      {
+        "sessioncode": "20261",
+        "session_name": "1: 2026/2027"
+      }
+    ]
+  },
+  {
+    "agencyid": "8",
+    "agencyname": "POLITEKNIK NILAI",
+    "sessions": [
+      {
+        "sessioncode": "20261",
+        "session_name": "1: 2026/2027"
+      }
+    ]
+  },
+  {
+    "agencyid": "9",
+    "agencyname": "POLITEKNIK MERLIMAU",
+    "sessions": [
+      {
+        "sessioncode": "20232",
+        "session_name": "2 : 2022/2023"
+      },
+      {
+        "sessioncode": "202401",
+        "session_name": "202401"
+      },
+      {
+        "sessioncode": "202402",
+        "session_name": "202402"
+      },
+      {
+        "sessioncode": "20241",
+        "session_name": "2 : 2024/2025"
+      },
+      {
+        "sessioncode": "20242",
+        "session_name": "2 : 2023/2024"
+      },
+      {
+        "sessioncode": "202501",
+        "session_name": "202501"
+      },
+      {
+        "sessioncode": "202502",
+        "session_name": "202502"
+      },
+      {
+        "sessioncode": "20251",
+        "session_name": "1 : 2025/2026"
+      },
+      {
+        "sessioncode": "20252",
+        "session_name": "2 : 2024/2025"
+      },
+      {
+        "sessioncode": "202601",
+        "session_name": "202601"
+      },
+      {
+        "sessioncode": "202602",
+        "session_name": "202602"
+      },
+      {
+        "sessioncode": "202605",
+        "session_name": "202605"
+      },
+      {
+        "sessioncode": "20261",
+        "session_name": "1: 2026/2027"
+      },
+      {
+        "sessioncode": "20262",
+        "session_name": "2 : 2025/2026"
+      },
+      {
+        "sessioncode": "20265",
+        "session_name": "20265"
+      },
+      {
+        "sessioncode": "20266",
+        "session_name": "20266"
+      },
+      {
+        "sessioncode": "202702",
+        "session_name": "202702"
+      },
+      {
+        "sessioncode": "20271",
+        "session_name": "1 : 2027/2028"
+      }
+    ]
+  }
+]
