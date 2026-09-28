@@ -1,21 +1,35 @@
 #!/usr/bin/env python3
-"""Split agency list into 20 chunks: 1 for Ungku Omar (agency 5), 19 for the rest.
+"""Split the pending agency list into up to 20 chunks: 1 for Ungku Omar (agency 5), up to 19 for the rest.
 Outputs JSON array of chunks: [[{"id":"5","name":"..."}], [{"id":"1",...},...], ...]
+Exits non-zero if the agency list cannot be fetched (so CI fails loudly instead of
+deploying with stale/empty chunk data).
 """
 import json
 import os
 import re
 import sys
+import time
 import urllib.request
 
 BASE_URL = "https://app.mypolycc.edu.my/polycctas/service/kelas/"
 CACHE_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "data", "cache")
 UNGKU_OMAR_ID = "5"
 
-def fetch_text(url):
+def fetch_text(url, max_retries=3):
+    """Fetch a URL with retries + exponential backoff (transient network failures
+    previously aborted the whole deploy job — see run #19)."""
     req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0"})
-    with urllib.request.urlopen(req, timeout=30) as resp:
-        return resp.read().decode("utf-8", errors="replace")
+    last_error = None
+    for attempt in range(max_retries):
+        try:
+            with urllib.request.urlopen(req, timeout=30) as resp:
+                return resp.read().decode("utf-8", errors="replace")
+        except Exception as e:  # URLError, HTTPError, TimeoutError, ...
+            last_error = e
+            print(f"fetch attempt {attempt + 1}/{max_retries} failed: {e}", file=sys.stderr)
+            if attempt < max_retries - 1:
+                time.sleep(2 ** attempt)
+    raise RuntimeError(f"Failed to fetch {url} after {max_retries} attempts: {last_error}")
 
 def extract_options(html, select_name):
     match = re.search(rf'<select[^>]*name="{select_name}"[^>]*>(.*?)</select>', html, re.S)
@@ -26,9 +40,16 @@ def extract_options(html, select_name):
             if v.strip()]
 
 def main():
-    # Fetch agency list
-    html = fetch_text(BASE_URL)
+    # Fetch agency list (retries; fail loudly if the portal is unreachable)
+    try:
+        html = fetch_text(BASE_URL)
+    except RuntimeError as e:
+        print(f"FATAL: {e}", file=sys.stderr)
+        sys.exit(1)
     agencies = extract_options(html, "agc")
+    if not agencies:
+        print("FATAL: no agencies parsed from portal page", file=sys.stderr)
+        sys.exit(1)
     print(f"Found {len(agencies)} agencies", file=sys.stderr)
 
     # Filter out cached

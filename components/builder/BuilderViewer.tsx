@@ -48,6 +48,8 @@ export default function BuilderViewer() {
 
   const [missedInput, setMissedInput] = useState('');
   const [dropInput, setDropInput] = useState('');
+  const [missedHint, setMissedHint] = useState('');
+  const [dropHint, setDropHint] = useState('');
   const [activePlan, setActivePlan] = useState(0);
   const [planCount, setPlanCount] = useState(10);
   const [allowDrop, setAllowDrop] = useState(false);
@@ -131,11 +133,19 @@ export default function BuilderViewer() {
     value: string,
     list: string[],
     set: (v: string[]) => void,
-    valid: string[]
+    valid: string[],
+    setHint: (v: string) => void
   ) => {
     const v = value.trim();
-    if (!v || list.includes(v)) return;
-    if (valid.length && !valid.includes(v)) return;
+    if (!v || list.includes(v)) {
+      setHint(v && list.includes(v) ? 'Already added.' : '');
+      return;
+    }
+    if (valid.length && !valid.includes(v)) {
+      setHint('Not offered this session — pick from the list.');
+      return;
+    }
+    setHint('');
     set([...list, v]);
   };
 
@@ -233,13 +243,14 @@ export default function BuilderViewer() {
                   <button
                     type="button"
                     onClick={() => {
-                      addUnique(missedInput, missed, setMissed, courseOptions);
+                      addUnique(missedInput, missed, setMissed, courseOptions, setMissedHint);
                       setMissedInput('');
                     }}
                   >
                     Add
                   </button>
                 </div>
+                {missedHint && <div className="add-hint" role="status">{missedHint}</div>}
                 <Chips items={missed} onRemove={(x) => setMissed(missed.filter((f) => f !== x))} />
               </div>
 
@@ -256,13 +267,14 @@ export default function BuilderViewer() {
                   <button
                     type="button"
                     onClick={() => {
-                      addUnique(dropInput, dropped, setDropped, dropOptions);
+                      addUnique(dropInput, dropped, setDropped, dropOptions, setDropHint);
                       setDropInput('');
                     }}
                   >
                     Add
                   </button>
                 </div>
+                {dropHint && <div className="add-hint" role="status">{dropHint}</div>}
                 <Chips items={dropped} onRemove={(x) => setDropped(dropped.filter((f) => f !== x))} />
               </div>
 
@@ -272,7 +284,7 @@ export default function BuilderViewer() {
                   checked={allowDrop}
                   onChange={(e) => setAllowDrop(e.target.checked)}
                 />
-                <span>Allow drop suggestions (drop a course if it can&apos;t fit clash-free)</span>
+                <span>Allow dropping clash-blocked courses (only non-requested base courses — missed courses are never dropped)</span>
               </label>
             </div>
 

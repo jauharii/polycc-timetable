@@ -310,6 +310,9 @@
 .chip button:hover {
   @apply text-black;
 }
+.add-hint {
+  @apply text-xs text-[#a00] mt-1;
+}
 
 .builder-suggest h2,
 .details h2 {

@@ -27,29 +27,36 @@ DAY_CODES = {
     "KHA": "05", "JUM": "06", "SAB": "07",
 }
 
-# PolyCC session name mapping (code -> name)
+# PolyCC session label overrides for legacy codes where the portal uses special wording.
+# The generic rule below matches the portal dropdown for regular codes.
 SESSION_NAMES = {
-    "20241": "2 : 2024/2025",
-    "20251": "1 : 2025/2026",
-    "20261": "1: 2026/2027",
-    "20262": "2 : 2025/2026",
-    "20263": "SEM PENDEK 2026",
+    "20202": "DIS 2020",       # legacy December session
+    "20211": "1 : 2021/2022",  # legacy code the portal labels start-year
+    "20212": "JUN 20212",      # legacy code with portal-specific wording
 }
 
 def normalize_session_name(code):
     """Derive session name from sessioncode YYYYX (PolyCC format).
-    20251 -> '1 : 2025/2026', 20262 -> '2 : 2025/2026', 20263 -> 'SEM PENDEK 2026'."""
+    The 4-digit year in the code is the session's END year, matching the portal
+    labels (e.g. 20261 -> 'SESI 1 2025/2026'): 20251 -> '1 : 2024/2025',
+    20262 -> '2 : 2025/2026', 20263 -> 'SEM PENDEK 2026'."""
     if code in SESSION_NAMES:
         return SESSION_NAMES[code]
     if len(code) == 5 and code[:4].isdigit() and code[4].isdigit():
         year, sess = code[:4], code[4]
         if sess == "3":
             return f"SEM PENDEK {year}"
-        if sess == "1":
-            return f"1 : {year}/{int(year)+1}"
-        if sess == "2":
-            return f"2 : {int(year)-1}/{year}"
+        if sess in ("1", "2"):
+            return f"{sess} : {int(year)-1}/{year}"
     return code
+
+def session_entry(s):
+    """Session dict with a name re-derived from its code (fixes labels stored in
+    older cache files before the end-year convention was corrected)."""
+    code = s.get("sessioncode", "")
+    derived = normalize_session_name(code)
+    name = derived if derived != code else (s.get("session_name", "") or code)
+    return {"sessioncode": code, "session_name": name}
 
 DB_SCHEMA = """
 PRAGMA journal_mode = WAL;
@@ -157,11 +164,13 @@ def fetch_agency(agencyid, agencyname):
         "courses": {}, "lecturers": [], "labs": {}, "timetables": [],
         "_seen_lecturers": set(),
         "_lecturer_names": {},
+        "_fetch_failed": False,
     }
     try:
         agency_html = fetch_text(BASE_URL + "?agc=" + agencyid)
     except Exception as e:
         print(f"  SKIP {agencyid}: agency page failed: {e}", flush=True)
+        result["_fetch_failed"] = True  # not cached -> a retry will re-attempt it
         return result
 
     sessions = [{"sessioncode": s["value"], "session_name": normalize_session_name(s["value"])}
@@ -277,8 +286,11 @@ def write_agencies_to_db(agency_data_list):
         cur.execute("INSERT OR IGNORE INTO agencies (agencyid, agencyname) VALUES (?, ?)", (a["agencyid"], a["agencyname"]))
 
         for s in data["sessions"]:
-            cur.execute("INSERT OR IGNORE INTO sessions (sessioncode, session_name) VALUES (?, ?)",
-                        (s["sessioncode"], s.get("session_name", "")))
+            entry = session_entry(s)
+            cur.execute(
+                "INSERT INTO sessions (sessioncode, session_name) VALUES (?, ?) "
+                "ON CONFLICT(sessioncode) DO UPDATE SET session_name = excluded.session_name",
+                (entry["sessioncode"], entry["session_name"]))
 
         seen_deps = set()
         for d in data["departments"]:
@@ -442,9 +454,12 @@ def main():
         agencyname = agency_opt["label"] or agencyid
         print(f"[{i+1}/{len(pending)}] {agencyid}...", flush=True)
         data = fetch_agency(agencyid, agencyname)
-        save_to_cache(agencyid, data)
+        if data.get("_fetch_failed"):
+            print(f"  FETCH FAILED {agencyid} (not cached; a retry will re-attempt it)", flush=True)
+        else:
+            save_to_cache(agencyid, data)
+            print(f"  cached: {len(data['timetables'])} timetables, {len(data['classes'])} classes", flush=True)
         agency_data_list.append(data)
-        print(f"  cached: {len(data['timetables'])} timetables, {len(data['classes'])} classes", flush=True)
 
     # Write to DB and merge JSON
     print("\nWriting to DB...", flush=True)
@@ -461,6 +476,12 @@ def main():
     db_timetables = c.fetchone()[0]
     conn.close()
     print(f"\nDB total: {db_agencies} agencies, {db_timetables} timetables")
+
+    failed = [d["agency"]["agencyid"] for d in agency_data_list if d.get("_fetch_failed")]
+    if failed:
+        print(f"ERROR: {len(failed)} agency page(s) failed to fetch: {', '.join(failed)}", flush=True)
+        print("Other agencies were cached — a retry only re-attempts the failures.", flush=True)
+        sys.exit(1)
     print("Done!")
 
 if __name__ == "__main__":

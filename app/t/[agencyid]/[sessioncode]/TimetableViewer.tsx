@@ -103,6 +103,11 @@ function TimetableContent({ initialData, agencyid, sessioncode }: TimetableViewe
         </div>
         <div className="poster-agency">{data.agency.agencyname}</div>
         {query ? (
+          filteredEntries.length === 0 ? (
+            <div className="text-center py-12 text-gray-500">
+              No entries found for &ldquo;{query}&rdquo; — pick an option from the list.
+            </div>
+          ) : (
           <>
             <div className="grid-desktop hidden md:block">
               <TimetableGrid rows={rows} filterType={filterType} />
@@ -111,6 +116,7 @@ function TimetableContent({ initialData, agencyid, sessioncode }: TimetableViewe
               <TimetableGridMobile rows={rows} filterType={filterType} />
             </div>
           </>
+          )
         ) : (
           <div className="text-center py-12 text-gray-500">
             Select a {filterType} to view timetable

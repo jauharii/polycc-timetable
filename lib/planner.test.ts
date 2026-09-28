@@ -200,7 +200,8 @@ assert.strictEqual(
   'prefers the class the friend is in'
 );
 
-// 11. allowDrop: an unplaceable missed course is dropped to stay clash-free
+// 11. allowDrop: an unplaceable BASE course is dropped to stay clash-free,
+// but a user-requested missed course is NEVER dropped.
 // MISSED2 only offered at 0108 which clashes with base C1; no other offering.
 const tt6: TimetableEntry[] = [
   E('0108', 'C1', 'MAIN'),
@@ -216,7 +217,12 @@ const r6drop = plan({
 });
 assert.ok(r6drop.rankedPlans.length >= 1, 'allowDrop yields a resolved plan');
 assert.strictEqual(r6drop.rankedPlans[0].resolved, true);
-assert.ok(r6drop.rankedPlans[0].drops.includes('MISSED2'), 'MISSED2 dropped');
+assert.ok(!r6drop.rankedPlans[0].drops.includes('MISSED2'), 'user-requested MISSED2 is never dropped');
+// the unresolvable missed course surfaces via suggestions, not silent loss
+assert.ok(
+  r6drop.suggestions.some((s) => s.coursecode === 'MISSED2'),
+  'MISSED2 reported in suggestions'
+);
 const r6nodrop = plan({
   timetables: tt6,
   mainClass: 'MAIN',
@@ -232,17 +238,20 @@ assert.ok(
 );
 
 // 12. ranking: fewest drops first, then fewest changes
-// MA can be placed clash-free (0 drops, 1 change) or dropped (1 drop, 0 changes).
+// MA is a BASE course (in MAIN): it can stay (0 drops, 0 changes), move to
+// classA (0 drops, 1 change), or be dropped (1 drop, 0 changes).
+// (Missed courses are never dropped, so the drop-vs-place tradeoff is
+// exercised on a base course.)
 const tt7: TimetableEntry[] = [
   E('0108', 'C1', 'MAIN'),
-  E('0315', 'MA', 'classA'),
-  E('0415', 'MA', 'classB'),
+  E('0310', 'MA', 'MAIN'), // base course, home slot
+  E('0410', 'MA', 'classA'), // alternative class, free slot
 ];
 const r7 = plan({
   timetables: tt7,
   mainClass: 'MAIN',
   droppedCourses: [],
-  missedCourses: ['MA'],
+  missedCourses: [],
   friends: [],
   allowDrop: true,
   maxPlans: 10,

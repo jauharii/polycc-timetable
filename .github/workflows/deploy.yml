@@ -20,10 +20,10 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - name: Split agencies into chunks of 5
+      - name: Split agencies into chunks
         id: split
         run: |
-          chunks=$(python3 scripts/split_agencies.py 5)
+          chunks=$(python3 scripts/split_agencies.py)
           echo "chunks=$chunks" >> "$GITHUB_OUTPUT"
           if [ "$chunks" = "[]" ]; then
             echo "has-chunks=false" >> "$GITHUB_OUTPUT"
@@ -61,10 +61,14 @@ jobs:
         run: |
           for attempt in 1 2 3; do
             echo "Attempt $attempt..."
-            python3 import_polycc.py --agencies "$CHUNK_JSON" && break
+            if python3 import_polycc.py --agencies "$CHUNK_JSON"; then
+              exit 0
+            fi
             echo "Attempt $attempt failed, retrying in 30s..."
             sleep 30
           done
+          echo "::error::All 3 scrape attempts failed for this chunk"
+          exit 1
 
       - name: Upload cache artifact
         if: always()
@@ -99,12 +103,16 @@ jobs:
 
       - name: Merge caches to DB and export JSON
         run: |
+          if [ -z "$(ls -A data/cache/*.json 2>/dev/null)" ]; then
+            echo "::error::No cache files downloaded — refusing to deploy (would wipe the site's data)"
+            exit 1
+          fi
           python3 import_polycc.py --merge-only
           python3 scripts/export_data.py
 
       - uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '22'
           cache: 'npm'
 
       - name: Install Node dependencies

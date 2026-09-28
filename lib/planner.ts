@@ -52,7 +52,9 @@ export interface PlannerInput {
   missedCourses: string[];
   friends: FriendProfile[];
   maxPlans?: number;
-  allowDrop?: boolean; // solver may drop courses to reach a clash-free plan
+  // Solver may drop courses it cannot place clash-free to reach a clash-free
+  // plan — but NEVER a course the user explicitly asked for (missedCourses).
+  allowDrop?: boolean;
 }
 
 export interface Assignment {
@@ -355,6 +357,8 @@ export function resolveCascade(input: PlannerInput): CascadeResult {
 function resolveBeam(input: PlannerInput, topN: number): RankedPlan[] {
   const { timetables, mainClass, droppedCourses, missedCourses, friends, allowDrop } = input;
   const drop = new Set(droppedCourses);
+  // Missed courses are user-requested additions: solver must place them, never drop.
+  const missedSet = new Set(missedCourses);
 
   const offCache = new Map<string, Offering[]>();
   const offeringsFor = (cc: string): Offering[] => {
@@ -443,7 +447,7 @@ function resolveBeam(input: PlannerInput, topN: number): RankedPlan[] {
           together: st.together + togetherGain(need.coursecode, off.classcode),
         });
       }
-      if (allowDrop) {
+      if (allowDrop && !missedSet.has(need.coursecode)) {
         next.push({
           assign: st.assign,
           dropped: [...st.dropped, need.coursecode],
