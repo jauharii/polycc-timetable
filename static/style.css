@@ -1,0 +1,314 @@
+body {
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+  background: #ffffff;
+  color: #111111;
+}
+
+.page {
+  max-width: 297mm;
+  margin: 0 auto;
+  padding: 24px;
+}
+
+.toolbar,
+.details {
+  background: #ffffff;
+  border: 1px solid #d9d9d9;
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 24px;
+}
+
+.table-wrap {
+  margin-bottom: 24px;
+}
+
+.filters {
+  display: flex;
+  gap: 12px;
+  align-items: end;
+  flex-wrap: wrap;
+}
+
+.filters label {
+  display: grid;
+  gap: 6px;
+  min-width: 220px;
+}
+
+.filters select,
+.filters input,
+.filters button {
+  height: 40px;
+  border: 1px solid #bdbdbd;
+  border-radius: 6px;
+  padding: 0 12px;
+  font: inherit;
+  background: #fff;
+}
+
+.filters button {
+  background: #111;
+  color: #fff;
+  cursor: pointer;
+}
+
+.filters button[type="button"] {
+  background: #444;
+}
+
+.poster-wrap {
+  padding-top: 8px;
+}
+
+.poster-headline {
+  text-align: center;
+  font-size: 72px;
+  font-weight: 400;
+  line-height: 1.05;
+  margin: 0 0 12px;
+}
+
+.poster-agency {
+  font-size: 24px;
+  margin: 0 0 2px;
+}
+
+.timetable,
+.detail-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.poster-table {
+  table-layout: fixed;
+  border: 3px solid #111;
+  width: 100%;
+}
+
+.poster-table th,
+.poster-table td {
+  border: 1.5px solid #111;
+  padding: 0;
+  vertical-align: middle;
+  background: #fff;
+}
+
+.day-corner {
+  width: 50mm;
+  height: 12mm;
+}
+
+.time-head {
+  height: 12mm;
+  text-align: center;
+}
+
+.time-index {
+  font-size: 14px;
+  line-height: 1;
+  margin-bottom: 2px;
+  font-weight: 400;
+}
+
+.time-label {
+  font-size: 9px;
+  line-height: 1.1;
+  font-weight: 400;
+  white-space: nowrap;
+}
+
+.day-name {
+  width: 50mm;
+  text-align: center;
+  font-size: 16px;
+  font-weight: 400;
+  letter-spacing: 0;
+  line-height: 1.1;
+  padding: 2px 4px;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.poster-cell {
+  height: 20mm;
+}
+
+.poster-slot {
+  height: 100%;
+  min-height: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 2px 4px;
+  overflow: hidden;
+}
+
+.poster-course {
+  font-size: 12px;
+  line-height: 1.1;
+  font-weight: 400;
+  margin-bottom: 3mm;
+  max-width: 100%;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.poster-room {
+  font-size: 9px;
+  line-height: 1.1;
+  font-weight: 400;
+  max-width: 100%;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.detail-table {
+  border-collapse: collapse;
+}
+
+.detail-table th,
+.detail-table td {
+  border: 1px solid #cfcfcf;
+  padding: 10px;
+  vertical-align: top;
+}
+
+.detail-table thead th {
+  background: #f3f3f3;
+  text-align: left;
+}
+
+@page {
+  size: A4 landscape;
+  margin: 6mm;
+}
+
+@media print {
+  html,
+  body {
+    background: #fff;
+    width: 297mm;
+    height: 210mm;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .page {
+    max-width: 297mm;
+    margin: 0;
+    padding: 0 6mm;
+  }
+
+  .toolbar {
+    display: none !important;
+  }
+
+  .poster-headline {
+    font-size: 18px;
+    margin-bottom: 2px;
+    line-height: 1.1;
+  }
+
+  .poster-agency {
+    font-size: 10px;
+    margin-bottom: 1px;
+  }
+
+  .table-wrap,
+  .details {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  .poster-table {
+    width: 100%;
+    border: 3px solid #000;
+    border-collapse: separate !important;
+    border-spacing: 0;
+  }
+
+  .poster-table th,
+  .poster-table td {
+    border: 1px solid #000;
+    padding: 0;
+  }
+
+  .day-corner {
+    width: 50mm;
+    height: 8mm;
+  }
+
+  .time-head {
+    height: 8mm;
+  }
+
+  .time-index {
+    font-size: 11px;
+    margin: 0;
+    line-height: 1;
+  }
+
+  .time-label {
+    font-size: 7px;
+    white-space: nowrap;
+  }
+
+  .day-name {
+    width: 50mm;
+    font-size: 12px;
+    padding: 1px 2px;
+    line-height: 1;
+  }
+
+  .poster-cell {
+    height: 14mm;
+  }
+
+  .poster-slot {
+    min-height: auto;
+    height: 100%;
+    padding: 2px;
+  }
+
+  .poster-course {
+    font-size: 9px;
+    margin-bottom: 2px;
+    line-height: 1;
+  }
+
+  .poster-room {
+    font-size: 7px;
+    line-height: 1;
+  }
+
+  .details {
+    margin-top: 4mm;
+  }
+
+  .detail-table {
+    width: 100%;
+    font-size: 8px;
+    border-collapse: separate !important;
+    border-spacing: 0;
+    border: 3px solid #000;
+  }
+
+  .detail-table th,
+  .detail-table td {
+    padding: 2px 4px;
+    border: 1px solid #000;
+  }
+
+  .detail-table thead th {
+    background: #fff;
+    font-weight: bold;
+  }
+}
