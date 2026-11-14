@@ -15,6 +15,9 @@ BASE_URL = "https://app.mypolycc.edu.my/polycctas/service/kelas/"
 CACHE_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "data", "cache")
 UNGKU_OMAR_ID = "5"
 
+# Current year for filtering - only include agencies with sessions in the current academic year
+CURRENT_YEAR = "2026"
+
 def fetch_text(url, max_retries=3):
     """Fetch a URL with retries + exponential backoff (transient network failures
     previously aborted the whole deploy job — see run #19)."""
@@ -39,6 +42,20 @@ def extract_options(html, select_name):
             for v, l in re.findall(r'<option value="([^"]*)"[^>]*>(.*?)</option>', match.group(1), re.S)
             if v.strip()]
 
+def has_current_sessions(agencyid):
+    """Check if an agency has sessions for the current academic year."""
+    try:
+        html = fetch_text(BASE_URL + "?agc=" + agencyid)
+        sessions = extract_options(html, "sesi")
+        # Check if any session code starts with the current year
+        for s in sessions:
+            if s["value"].startswith(CURRENT_YEAR):
+                return True
+        return False
+    except Exception as e:
+        print(f"  Warning: could not check sessions for {agencyid}: {e}", file=sys.stderr)
+        return False
+
 def main():
     # Fetch agency list (retries; fail loudly if the portal is unreachable)
     try:
@@ -62,6 +79,24 @@ def main():
     pending = [a for a in agencies if a["value"] not in cached]
     print(f"Pending: {len(pending)} (cached: {len(cached)})", file=sys.stderr)
 
+    if not pending:
+        print("[]")
+        return
+
+    # Filter pending agencies to only those with current sessions
+    agencies_with_current = []
+    agencies_without_current = []
+    for agency in pending:
+        if has_current_sessions(agency["value"]):
+            agencies_with_current.append(agency)
+        else:
+            agencies_without_current.append(agency)
+            print(f"  SKIP {agency['value']}: no sessions for {CURRENT_YEAR}", file=sys.stderr)
+
+    print(f"Agencies with current sessions: {len(agencies_with_current)}", file=sys.stderr)
+    print(f"Agencies without current sessions: {len(agencies_without_current)}", file=sys.stderr)
+
+    pending = agencies_with_current
     if not pending:
         print("[]")
         return

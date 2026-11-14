@@ -67,7 +67,7 @@ jobs:
             echo "Attempt $attempt failed, retrying in 30s..."
             sleep 30
           done
-          echo "::error::All 3 scrape attempts failed for this chunk"
+          echo "::warning::All 3 scrape attempts failed for this chunk"
           exit 1
 
       - name: Upload cache artifact

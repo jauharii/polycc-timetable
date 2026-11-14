@@ -482,6 +482,13 @@ def main():
         print(f"ERROR: {len(failed)} agency page(s) failed to fetch: {', '.join(failed)}", flush=True)
         print("Other agencies were cached — a retry only re-attempts the failures.", flush=True)
         sys.exit(1)
+
+    # Check if we actually got any timetable data; if not, warn but don't fail
+    # (some agencies may have no classes in the current session)
+    total_timetables = sum(len(d.get("timetables", [])) for d in agency_data_list)
+    if total_timetables == 0:
+        print("WARNING: No timetable data found for any agency in this chunk", flush=True)
+        print("This may be expected if agencies have no current session data", flush=True)
     print("Done!")
 
 if __name__ == "__main__":
